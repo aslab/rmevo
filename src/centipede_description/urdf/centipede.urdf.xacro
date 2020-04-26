@@ -1,0 +1,40 @@
+﻿<?xml version="1.0"?>
+<!--  Centipede bot-->
+<robot name="centipede" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Constants for robot dimensions -->
+  <xacro:property name="PI" value="3.1415926535897931"/>
+  
+  <xacro:property name="bodyMass" value="1" /> 
+  <xacro:property name="bodyHeight" value="0.4" /> 
+  <xacro:property name="bodyRadius" value="0.1" /> 
+  
+  <xacro:property name="body1Origin" value="0 0 ${bodyHeight}" /> 
+  
+  <xacro:property name="leg1_Mass" value="1" /> 
+  <xacro:property name="leg1_Length" value="0.1" /> 
+  <xacro:property name="leg1_Width" value="0.01" /> 
+  
+  <!-- Import all Gazebo-customization elements, including Gazebo colors -->
+  <xacro:include filename="$(find centipede_description)/urdf/centipede.gazebo" />
+  <!-- Import Rviz colors -->
+  <xacro:include filename="$(find centipede_description)/urdf/materials.xacro" />
+  <!-- Import Macros -->
+  <xacro:include filename="$(find centipede_description)/urdf/macros.xacro" />
+  
+   <!-- Import Body -->
+  <xacro:include filename="$(find centipede_description)/urdf/body.urdf.xacro" />
+   <!-- Import Leg -->
+  <xacro:include filename="$(find centipede_description)/urdf/leg.urdf.xacro" />
+
+  <!-- Used for fixing robot to Gazebo 'base_link (frame reference)' -->
+  <link name="base_link"/>
+
+<!-- Body -->
+<xacro:body parent="base_link" child="body1"/>  
+  
+  <!-- Legs -->  
+<xacro:leg number="1" lr="left" transX="0" transY="1"/>
+<xacro:leg number="1" lr="right" transX="0" transY="-1"/>
+
+</robot>

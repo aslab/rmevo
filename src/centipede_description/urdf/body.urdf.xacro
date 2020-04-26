@@ -1,0 +1,36 @@
+﻿<?xml version="1.0"?>
+<robot name="body" xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:macro name="body" params="parent child">
+    <joint name="fixed" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${child}"/>
+    </joint>
+
+    <!-- Base Link -->
+    <!-- TODO: Generalize body1Origin -->
+    
+    <link name="${child}">
+      <collision>
+        <origin xyz="${body1Origin}" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="${bodyRadius}"/>
+        </geometry>
+      </collision>
+
+      <visual>
+        <origin xyz="${body1Origin}" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="${bodyRadius}"/>
+        </geometry>
+        <material name="orange"/>
+      </visual>
+
+      <inertial>
+        <origin xyz="${body1Origin}" rpy="0 0 0"/>
+        <mass value="${bodyMass}"/>
+        <xacro:sphere_inertia  m="${bodyMass}" r="${bodyRadius}"/>
+      </inertial>
+    </link>
+  </xacro:macro>
+</robot>
