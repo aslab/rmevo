@@ -1,0 +1,4 @@
+#Ignore devel and build folders
+devel/
+build/
+.catkin_workspace
