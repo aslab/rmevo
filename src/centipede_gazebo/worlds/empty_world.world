@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+﻿<?xml version="1.0" ?>
 <sdf version="1.4">
   <world name="default">
     <include>
@@ -8,5 +8,8 @@
     <include>
       <uri>model://sun</uri>
     </include>
+    
+    <plugin name="generator" filename="libgenerator.so"/>
+    
   </world>
 </sdf>

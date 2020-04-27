@@ -37,6 +37,11 @@ link_directories()
 
 link_directories(${GAZEBO_LIBRARY_DIRS})
 
+add_library(generator SHARED plugins/generator.cpp)
+target_link_libraries(generator
+  ${GAZEBO_LIBRARIES}
+)
+
 install(DIRECTORY
   launch
   DESTINATION share/${PROJECT_NAME}/
