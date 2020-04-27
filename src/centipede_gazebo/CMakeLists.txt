@@ -18,14 +18,16 @@ endif()
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin)
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+)
 
 find_package(gazebo REQUIRED)
 
 catkin_package(
   INCLUDE_DIRS
   LIBRARIES
-  CATKIN_DEPENDS
+  CATKIN_DEPENDS roscpp
 )
 
 include_directories(
