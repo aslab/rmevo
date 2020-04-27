@@ -39,7 +39,7 @@ link_directories()
 
 link_directories(${GAZEBO_LIBRARY_DIRS})
 
-add_library(generator SHARED plugins/generator.cpp)
+add_library(generator SHARED plugins/generator_plugin.cpp)
 target_link_libraries(generator
   ${GAZEBO_LIBRARIES}
 )

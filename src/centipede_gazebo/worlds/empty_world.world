@@ -9,7 +9,7 @@
       <uri>model://sun</uri>
     </include>
     
-    <plugin name="generator" filename="libgenerator.so"/>
+    <plugin name="generator" filename="libgenerator_plugin.so"/>
     
   </world>
 </sdf>

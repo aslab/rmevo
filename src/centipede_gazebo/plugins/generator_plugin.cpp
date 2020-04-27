@@ -1,7 +1,7 @@
 // Include Gazebo dependencies
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
-//#include <gazebo_plugins/gazebo_ros_utils.h>
+#include <gazebo_plugins/gazebo_ros_utils.h>
 
 // Include ros dependencies
 #include <ros/ros.h>
@@ -29,7 +29,7 @@ namespace gazebo
 		{
 		}
   
-		void Load(physics::WorldPtr _world, sdf::ElementPtr /*_sdf*/) {
+		void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 			// Make sure the ROS node for Gazebo has already been initialized                                                                                    
 			if (!ros::isInitialized())
 			{
@@ -39,15 +39,11 @@ namespace gazebo
 			}
 			
 			this->world = _world;
-        
-			//gazebo_ros_->getParameter<std::string> ( command_topic_, "commandTopic", "cmd_vel" );
-			//Get the joint
-			//selected_joint_ = gazebo_ros_->getJoint(this->parent, "jointName", "joint1");
-	
+			
 			ROS_INFO("Launching generator_controller");
 			
-			//generatorService = ros::NodeHandle::advertiseService("spawn_two_legged", SpawnTwoLegged);
 			this->busSpawner = this->nh_.advertiseService("spawn_bus", &Generator::SpawnBus, this);
+			this->generatorService = this->nh_.advertiseService("spawn_two_legged", &Generator::SpawnTwoLegged, this);
 	
 			//ros::SubscribeOptions so =
 			//	ros::SubscribeOptions::create<sensor_msgs::JointState>(command_topic_, 1,
@@ -57,11 +53,13 @@ namespace gazebo
 			//_parent->InsertModelFile("model://bus");
 		}
 				
-		/*bool SpawnTwoLegged( ros::ServiceEvent<std_srvs::Empty, std_srvs::Empty>& event ){
+		bool SpawnTwoLegged( std_srvs::Empty::Request &req,std_srvs::Empty::Response &res ){
 			ROS_INFO_NAMED("Generator","Spawning twolegged... (Not writed yet)");
+			std::string Filename = "../../centipede_description/centipede.urdf";
+			world->InsertModelFile(Filename);
 			return true;
 		}
-		*/
+		
 		bool SpawnBus( std_srvs::Empty::Request &req,std_srvs::Empty::Response &res){
 			ROS_INFO_NAMED("Generator","Spawning bus...");
 			world->InsertModelFile("model://bus");
