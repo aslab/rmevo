@@ -9,7 +9,7 @@
 
 namespace gazebo
 {	
-	class Generator : public WorldPlugin
+	class GeneratorPlugin : public WorldPlugin
 	{
 		private:
 		physics::WorldPtr world;
@@ -19,13 +19,13 @@ namespace gazebo
 		
 		public : 
 		// Constructor
-		Generator() :
-			nh_("generator_node")
+		GeneratorPlugin() :
+			nh_("generator_plugin")
 		{
 		}
 
 		// Destructor
-		~Generator()
+		~GeneratorPlugin()
 		{
 		}
   
@@ -42,8 +42,8 @@ namespace gazebo
 			
 			ROS_INFO("Launching generator_controller");
 			
-			this->busSpawner = this->nh_.advertiseService("spawn_bus", &Generator::SpawnBus, this);
-			this->generatorService = this->nh_.advertiseService("spawn_two_legged", &Generator::SpawnTwoLegged, this);
+			this->busSpawner = this->nh_.advertiseService("spawn_bus", &GeneratorPlugin::SpawnBus, this);
+			this->generatorService = this->nh_.advertiseService("spawn_two_legged", &GeneratorPlugin::SpawnTwoLegged, this);
 	
 			//ros::SubscribeOptions so =
 			//	ros::SubscribeOptions::create<sensor_msgs::JointState>(command_topic_, 1,
@@ -69,5 +69,5 @@ namespace gazebo
 	};
 	
 	// Register this plugin with the simulator
-	GZ_REGISTER_WORLD_PLUGIN(Generator)
+	GZ_REGISTER_WORLD_PLUGIN(GeneratorPlugin)
 }
