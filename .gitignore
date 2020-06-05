@@ -3,5 +3,3 @@ devel/
 build/
 .catkin_workspace
 
-#Ignore python compiled files
-__pycache__/
