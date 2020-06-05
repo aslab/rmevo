@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf8'?>
+<sdf version="1.6"><model name="centipede"><pose>0.000000e+00 0.000000e+00 3.000000e-02 0.000000e+00 -0.000000e+00 0.000000e+00</pose><link name="Core"><pose>0.000000e+00 -1.000000e-01 0.000000e+00 0.000000e+00 -0.000000e+00 0.000000e+00</pose><self_collide>True</self_collide><sensor name="core-imu_sensor" type="imu"><pose>0.000000e+00 1.000000e-01 0.000000e+00 0.000000e+00 -0.000000e+00 0.000000e+00</pose><always_on>True</always_on></sensor><visual name="body_link_1_visual">
+        <pose>0.000000e+00 1.000000e-01 0.000000e+00 0.000000e+00 -0.000000e+00 0.000000e+00</pose><geometry>
+          <sphere>
+            <radius>0.1</radius>
+          </sphere>
+        </geometry>
+      <material><ambient>0.94 0.98 0.05 1.0</ambient><diffuse>0.94 0.98 0.05 1.0</diffuse><specular>0.1 0.1 0.1 1.0</specular></material></visual>
+      <collision name="body_link_collision">
+        <pose>0.000000e+00 1.000000e-01 0.000000e+00 0.000000e+00 -0.000000e+00 0.000000e+00</pose><geometry>
+          <sphere>
+            <radius>0.1</radius>
+          </sphere>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode />
+          </friction>
+        </surface>
+      </collision>
+      <visual name="Visual_Core2">
+        <pose>0.000000e+00 -1.000000e-01 0.000000e+00 -3.141593e+00 1.570796e+00 0.000000e+00</pose><geometry>
+          <sphere>
+            <radius>0.1</radius>
+          </sphere>
+        </geometry>
+      <material><ambient>0.98 0.98 0.98 1.0</ambient><diffuse>0.98 0.98 0.98 1.0</diffuse><specular>0.1 0.1 0.1 1.0</specular></material></visual>
+      <collision name="Collisions_Core2">
+        <pose>0.000000e+00 -1.000000e-01 0.000000e+00 -3.141593e+00 1.570796e+00 0.000000e+00</pose><geometry>
+          <sphere>
+            <radius>0.1</radius>
+          </sphere>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode />
+          </friction>
+        </surface>
+      </collision>
+      </link></model></sdf>
