@@ -42,3 +42,5 @@ catkin_install_python(PROGRAMS rmevo.py
     DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
+add_library(world_control SHARED gazebo/plugins/world_control.cc)
+target_link_libraries(world_control ${GAZEBO_LIBRARIES})
