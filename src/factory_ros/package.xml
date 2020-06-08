@@ -2,10 +2,14 @@
 <package format="2">
   <name>factory</name>
   <version>0.1.0</version>
-  <description>Package with the RMEvo software</description>
+  <description>Package with the Factory for SDF modules parser</description>
   <maintainer email="jorge@todo.todo">jorge</maintainer>
   <license>TODO: License declaration</license>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <depend>roscpp</depend>
+
+  <depend>rospy</depend>
+
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
 </package>
