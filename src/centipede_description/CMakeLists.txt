@@ -46,11 +46,6 @@ install(DIRECTORY
 )
 
 install(DIRECTORY
-  models
-  DESTINATION share/${PROJECT_NAME}/
-)
-
-install(DIRECTORY
   urdf
   DESTINATION share/${PROJECT_NAME}/
 )

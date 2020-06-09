@@ -1,6 +1,7 @@
 #Ignore devel and build folders
 devel/
 build/
+install/
 .catkin_workspace
 
 # RMEvo Logging
