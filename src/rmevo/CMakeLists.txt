@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(rmevo)
 
+## Uncomment if the package has a setup.py
+catkin_python_setup()
+
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 99)
@@ -31,8 +34,8 @@ catkin_package(
 )
 
 include_directories(include
-${catkin_INCLUDE_DIRS}
-${GAZEBO_INCLUDE_DIRS}
+    ${catkin_INCLUDE_DIRS}
+    ${GAZEBO_INCLUDE_DIRS}
 )
 
 link_directories()
