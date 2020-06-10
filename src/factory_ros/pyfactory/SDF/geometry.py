@@ -1,7 +1,7 @@
 import xml.etree.ElementTree
 import copy
 
-from pyrmevo import SDF
+from pyfactory import SDF
 
 
 class MeshGeometry(xml.etree.ElementTree.Element):

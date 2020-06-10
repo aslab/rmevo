@@ -1,8 +1,8 @@
 import numpy as np
 import sys
 
-from pyrmevo import SDF
-from pyrmevo.SDF.inertial import transform_inertia_tensor
+from pyfactory import SDF
+from pyfactory.SDF.inertial import transform_inertia_tensor
 from ..custom_logging.logger import logger
 
 

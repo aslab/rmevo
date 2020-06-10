@@ -4,7 +4,7 @@ Class containing the body parts to compose a RMEvo robot
 from collections import OrderedDict
 from enum import Enum
 
-from pyrmevo import SDF
+from pyfactory import SDF
 
 import copy
 

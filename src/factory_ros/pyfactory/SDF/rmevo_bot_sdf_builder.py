@@ -1,13 +1,13 @@
 import math
 import xml.etree.ElementTree
 
-from pyrmevo import SDF
-from pyrmevo.rmevo_bot.rmevo_module import ActiveHingeModule, Orientation, BoxSlot, FactoryModule
+from pyfactory import SDF
+from pyfactory.rmevo_module import Orientation, BoxSlot, FactoryModule
 
 
 def rmevo_bot_to_sdf(robot, robot_pose, nice_format, self_collide=True):
     from xml.etree import ElementTree
-    from pyrmevo import SDF
+    from pyfactory import SDF
 
     sdf_root = ElementTree.Element('sdf', {'version': '1.6'})
 

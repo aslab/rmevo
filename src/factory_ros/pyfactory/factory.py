@@ -1,14 +1,14 @@
 from xml.etree.ElementTree import ElementTree
 
 from pyfactory.rmevo_module import FactoryModule
-from pyrmevo import SDF
+from pyfactory import SDF
 from enum import Enum
 
 import copy
 
-from pyrmevo.custom_logging.logger import logger
+from pyfactory.custom_logging.logger import logger
 
-from pyrmevo.SDF.geometry import Visual, Collision
+from pyfactory.SDF.geometry import Visual, Collision
 
 
 class Box:
@@ -92,7 +92,7 @@ class Factory:
             raise RuntimeError('Visual tag not found in link')
 
     def parse_rmevo(self, module, rmevo_tree):
-        from pyrmevo.rmevo_bot.rmevo_module import BoxSlot, Orientation
+        from pyfactory.rmevo_module import BoxSlot, Orientation
 
         slots_tag = rmevo_tree.find('slots')
         if slots_tag is not None:
@@ -129,7 +129,7 @@ class Factory:
         sdf_tree.parse(file)
         root = sdf_tree.getroot()
 
-        logger.info("Importing file.")
+        logger.info("Importing module in file: " + file)
 
         if not root.tag == 'sdf':
             logger.error("Input file is not a valid sdf")
@@ -146,12 +146,22 @@ class Factory:
     def import_modules_from_dir(self, dir_path):
         import os
         import fnmatch
+
+        logger.info("Importing modules in " + dir_path)
+
         # List all files the given directory and select the .sdf
         for entry in os.listdir(dir_path):
             file_path = os.path.join(dir_path, entry)
             if os.path.isfile(file_path):
                 if fnmatch.fnmatch(file_path, '*.sdf'):
                     self.import_module_from_sdf(file_path)
+
+        logger.info("Number of imported modules is: %d", len(self.modules_list))
+
+
+
+    def get_modules_list(self):
+        return self.modules_list
 
 
 class Alphabet(Enum):

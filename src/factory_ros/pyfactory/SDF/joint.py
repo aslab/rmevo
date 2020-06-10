@@ -1,7 +1,7 @@
 import uuid
 import xml.etree.ElementTree
-from pyrmevo import SDF
-import pyrmevo.SDF.math
+from pyfactory import SDF
+import pyfactory.SDF.math
 
 
 class Joint(SDF.Posable):

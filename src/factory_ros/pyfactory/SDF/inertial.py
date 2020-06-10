@@ -1,7 +1,7 @@
 import xml.etree
 import numpy as np
 
-from pyrmevo import SDF
+from pyfactory import SDF
 
 
 class Inertial(SDF.Posable):

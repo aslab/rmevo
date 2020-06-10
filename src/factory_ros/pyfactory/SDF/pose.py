@@ -1,9 +1,9 @@
 import sys
 import xml.etree.ElementTree
 
-from pyrmevo import SDF
-import pyrmevo.SDF.math
-from ..custom_logging.logger import logger
+from pyfactory import SDF
+import pyfactory.SDF.math
+from pyfactory.custom_logging.logger import logger
 
 
 class Pose(xml.etree.ElementTree.Element):

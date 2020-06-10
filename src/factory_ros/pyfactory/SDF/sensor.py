@@ -1,5 +1,5 @@
 import xml.etree.ElementTree
-from pyrmevo import SDF
+from pyfactory import SDF
 
 
 class Sensor(SDF.Posable):

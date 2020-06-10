@@ -14,9 +14,9 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 add_service_files(
-  DIRECTORY srv
   FILES
   ImportModules.srv
+  OutputString.srv
 )
 
 generate_messages(
