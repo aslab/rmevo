@@ -7,7 +7,7 @@ from __future__ import absolute_import
 
 import random
 
-from pyrmevo.spec.msgs import Body
+from pyfactory.spec.msgs import Body
 
 
 def _init_part_list(spec, parts):
