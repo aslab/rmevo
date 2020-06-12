@@ -5,7 +5,6 @@ from collections import OrderedDict
 from enum import Enum
 
 from pyfactory import SDF
-
 import copy
 
 # MEASUREMENT CONVERSION
@@ -70,53 +69,6 @@ class RMEvoModule:
 
     def color(self):
         return self.rgb if self.rgb is not None else self.DEFAULT_COLOR
-
-    @staticmethod
-    def FromYaml(yaml_object, factory=None):
-        """
-        From a yaml object, creates a data struture of interconnected body modules. 
-        Standard names for modules are: 
-        CoreComponent
-        ActiveHinge
-        FixedBrick
-        FixedBrickSensor
-        """
-        mod_type = yaml_object['type']
-        if mod_type == 'CoreComponent' or mod_type == 'Core':
-            module = CoreModule()
-        elif mod_type == 'ActiveHinge':
-            module = ActiveHingeModule()
-        elif mod_type == 'FixedBrick':
-            module = BrickModule()
-        elif mod_type == 'FixedBrickSensor':
-            module = BrickSensorModule()
-        elif mod_type == 'TouchSensor':
-            module = TouchSensorModule()
-        else:
-            raise NotImplementedError('"{}" module not yet implemented'.format(mod_type))
-
-        module.id = yaml_object['id']
-
-        try:
-            module.orientation = yaml_object['orientation']
-        except KeyError:
-            module.orientation = 0
-
-        try:
-            module.rgb = (
-                yaml_object['params']['red'],
-                yaml_object['params']['green'],
-                yaml_object['params']['blue'],
-            )
-        except KeyError:
-            pass
-
-        if 'children' in yaml_object:
-            for parent_slot in yaml_object['children']:
-                module.children[parent_slot] = FactoryModule.FromYaml(
-                    yaml_object=yaml_object['children'][parent_slot], factory=factory)
-
-        return module
 
     def to_yaml(self):
         if self.TYPE is None:
@@ -215,232 +167,6 @@ class RMEvoModule:
         return has_children
 
 
-class CoreModule(RMEvoModule):
-    """
-    Inherits class RevolveModule. Creates Robogen core module
-    """
-    TYPE = "CoreComponent"
-    VISUAL_MESH = 'model://rg_robot/meshes/CoreComponent.dae'
-    SLOT_COORDINATES = 0.089 / 2.0
-    COLLISION_BOX = (0.089, 0.089, 0.045)
-    MASS = grams(90)
-
-    def __init__(self):
-        super().__init__()
-        self.substrate_coordinates = (0, 0)
-
-    def possible_slots(self):
-        return (
-            (-self.SLOT_COORDINATES, self.SLOT_COORDINATES),  # X
-            (-self.SLOT_COORDINATES, self.SLOT_COORDINATES),  # Y
-            (-self.SLOT_COORDINATES, self.SLOT_COORDINATES),  # Z
-        )
-
-    def to_sdf(self, tree_depth='', parent_link=None, child_link=None):
-        imu_sensor = SDF.IMUSensor('core-imu_sensor', parent_link, self)
-        visual, collision, _ = super().to_sdf(tree_depth, parent_link, child_link)
-        parent_link.append(imu_sensor)
-        return visual, collision, imu_sensor
-
-
-class ActiveHingeModule(RMEvoModule):
-    """
-    Inherits class RevolveModule. Creates Robogen joint module
-    """
-    TYPE = 'ActiveHinge'
-    VISUAL_MESH_FRAME = 'model://rg_robot/meshes/ActiveHinge_Frame.dae'
-    VISUAL_MESH_SERVO = 'model://rg_robot/meshes/ActiveCardanHinge_Servo_Holder.dae'
-    COLLISION_BOX_FRAME = (2.20e-02, 3.575e-02, 1.0e-02)
-    COLLISION_BOX_SERVO = (2.45e-02, 2.575e-02, 1.5e-02)
-    COLLISION_BOX_SERVO_2 = (1.0e-3, 3.4e-2, 3.4e-02)
-    COLLISION_BOX_SERVO_OFFSET = (
-        SDF.math.Vector3(0, 0, 0),
-        SDF.math.Vector3(-0.0091, 0, 0),
-    )
-    MASS_FRAME = grams(1.7)
-    MASS_SERVO = grams(9)
-
-    def __init__(self):
-        super().__init__()
-        self.children = {1: None}
-
-    def iter_children(self):
-        return self.children.items()
-
-    def _generate_yaml_children(self):
-        child = self.children[1]
-        if child is None:
-            return None
-        else:
-            return {1: child.to_yaml()}
-
-    def to_sdf(self, tree_depth='', parent_link=None, child_link=None):
-        assert(parent_link is not None)
-        assert(child_link is not None)
-        name_frame = 'component_{}_{}__frame'.format(tree_depth, self.TYPE)
-        name_joint = 'component_{}_{}__joint'.format(tree_depth, self.TYPE)
-        name_servo = 'component_{}_{}__servo'.format(tree_depth, self.TYPE)
-        name_servo2 = 'component_{}_{}__servo2'.format(tree_depth, self.TYPE)
-
-        visual_frame = SDF.Visual(name_frame, self.rgb)
-        geometry = SDF.MeshGeometry(self.VISUAL_MESH_FRAME)
-        visual_frame.append(geometry)
-
-        collision_frame = SDF.Collision(name_frame, self.MASS_FRAME)
-        geometry = SDF.BoxGeometry(self.COLLISION_BOX_FRAME)
-        collision_frame.append(geometry)
-
-        visual_servo = SDF.Visual(name_servo, self.rgb)
-        geometry = SDF.MeshGeometry(self.VISUAL_MESH_SERVO)
-        visual_servo.append(geometry)
-
-        collision_servo = SDF.Collision(name_servo, self.MASS_SERVO)
-        collision_servo.translate(SDF.math.Vector3(0.002375, 0, 0))
-        geometry = SDF.BoxGeometry(self.COLLISION_BOX_SERVO)
-        collision_servo.append(geometry)
-
-        collision_servo_2 = SDF.Collision(name_servo2, 0)
-        collision_servo_2.translate(SDF.math.Vector3(0.01175, 0.001, 0))
-        geometry = SDF.BoxGeometry(self.COLLISION_BOX_SERVO_2)
-        collision_servo_2.append(geometry)
-
-        joint = SDF.Joint(self.id,
-                          name_joint,
-                          parent_link,
-                          child_link,
-                          axis=SDF.math.Vector3(0, 1, 0),
-                          coordinates=self.substrate_coordinates,
-                          motorized=True)
-
-        joint.set_position(SDF.math.Vector3(-0.0085, 0, 0))
-
-        return visual_frame, \
-               [collision_frame], \
-               visual_servo, \
-               [collision_servo, collision_servo_2], \
-               joint
-
-    def possible_slots_frame(self):
-        box_geometry = self.COLLISION_BOX_FRAME
-        return (
-            (box_geometry[0] / -2.0, box_geometry[0] / 2.0 - 0.001),  # X
-            (0, 0),  # Y
-            (0, 0),  # Z
-        )
-
-    def possible_slots_servo(self):
-        box_geometry = self.COLLISION_BOX_SERVO
-        return (
-            (box_geometry[0] / -2.0, box_geometry[0] / 2.0),  # X
-            (0, 0),  # Y
-            (0, 0),  # Z
-        )
-
-    def boxslot_frame(self, orientation=None):
-        orientation = Orientation.SOUTH if orientation is None else orientation
-        boundaries = self.possible_slots_frame()
-        return BoxSlotJoints(
-            boundaries,
-            orientation,
-            self.COLLISION_BOX_SERVO_OFFSET
-        )
-
-    def boxslot_servo(self, orientation=None):
-        orientation = Orientation.SOUTH if orientation is None else orientation
-        boundaries = self.possible_slots_servo()
-        return BoxSlotJoints(boundaries, orientation)
-
-    def boxslot(self, orientation=None):
-        orientation = Orientation.SOUTH if orientation is None else orientation
-        if orientation is Orientation.SOUTH:
-            return self.boxslot_frame(orientation)
-        elif orientation is Orientation.NORTH:
-            return self.boxslot_servo(orientation)
-        else:
-            raise RuntimeError("Invalid orientation")
-
-
-class BrickModule(RMEvoModule):
-    """
-    Inherits class RevolveModule. Creates Robogen brick module
-    """
-    TYPE = "FixedBrick"
-    VISUAL_MESH = 'model://rg_robot/meshes/FixedBrick.dae'
-    SLOT_COORDINATES = 3.8e-2 / 2.0
-    COLLISION_BOX = (4.1e-2, 4.1e-2, 3.55e-02)
-    MASS = grams(10.2)
-
-    def __init__(self):
-        super().__init__()
-
-    def possible_slots(self):
-        return (
-            (-self.SLOT_COORDINATES, self.SLOT_COORDINATES),  # X
-            (-self.SLOT_COORDINATES, self.SLOT_COORDINATES),  # Y
-            (-self.SLOT_COORDINATES, self.SLOT_COORDINATES),  # Z
-        )
-
-
-class BrickSensorModule(RMEvoModule):
-    """
-    TODO not finished
-    Inherits class RevolveModule. Creates Robogen brick sensor module
-    """
-    TYPE = "FixedBrickSensor"
-    VISUAL_MESH = 'model://rg_robot/meshes/FixedBrick.dae'
-    COLLISION_BOX = (4.1e-2, 4.1e-2, 3.55e-02)
-
-    def __init__(self):
-        super().__init__()
-        raise RuntimeError("Not implemented yet")
-
-
-class TouchSensorModule(RMEvoModule):
-    """
-    Inherits class RevolveModule. Creates Robogen sensor module
-    """
-    TYPE = "TouchSensor"
-    VISUAL_MESH = 'model://rg_robot/meshes/TouchSensor.dae'
-    SLOT_COORDINATES = 1e-2 / 2.0
-    COLLISION_BOX = (4.1e-3, 3.1e-2, 1.55e-02)
-    MASS = grams(3)
-
-    def __init__(self):
-        super().__init__()
-        self.children = {}
-
-    def boxslot(self, orientation=None):
-        orientation = Orientation.SOUTH if orientation is None else orientation
-        assert (orientation is Orientation.SOUTH)
-        return BoxSlotTouchSensor(self.possible_slots())
-
-    def possible_slots(self):
-        return (
-            (-self.SLOT_COORDINATES, 0),  # X
-            (0, 0),  # Y
-            (0, 0),  # Z
-        )
-
-    def to_sdf(self, tree_depth='', parent_link=None, child_link=None):
-        assert(parent_link is not None)
-        name = 'component_{}_{}'.format(tree_depth, self.TYPE)
-        name_sensor = 'sensor_{}_{}'.format(tree_depth, self.TYPE)
-
-        visual = SDF.Visual(name, self.rgb)
-        geometry = SDF.MeshGeometry(self.VISUAL_MESH)
-        visual.append(geometry)
-
-        collision = SDF.Collision(name, self.MASS)
-        geometry = SDF.BoxGeometry(self.COLLISION_BOX)
-        # collision.translate(SDF.math.Vector3(0.01175, 0.001, 0))
-        collision.append(geometry)
-
-        sensor = SDF.TouchSensor(name_sensor, collision, parent_link, self)
-        parent_link.append(sensor)
-
-        return visual, collision, sensor
-
-
 class FactoryModule(RMEvoModule):
 
     """
@@ -474,51 +200,46 @@ class FactoryModule(RMEvoModule):
         FixedBrickSensor
         """
 
+        new_module = FactoryModule()
+
+        for module_template in factory.modules_list:
+            if module_template.TYPE == yaml_object['type']:
+                new_module = copy.deepcopy(module_template)
+                break
+
+        if new_module.TYPE == None:
+                assert RuntimeError("Module not implemented")
+
+        new_module.id = yaml_object['id']
+
         try:
-            return RMEvoModule.FromYaml(yaml_object, factory)
+            new_module.orientation = yaml_object['orientation']
+        except KeyError:
+            new_module.orientation = 0
 
-        except NotImplementedError:
+        try:
+            new_module.rgb = (
+                yaml_object['params']['red'],
+                yaml_object['params']['green'],
+                yaml_object['params']['blue'],
+            )
+        except KeyError:
+            pass
 
-            new_module = FactoryModule()
+        if 'children' in yaml_object:
+            for parent_slot in yaml_object['children']:
+                # Try first to load a robot from the modules, else use the factory
+                # try:
+                #     new_module.children[parent_slot] = super().FromYaml(yaml_object['children'][parent_slot])
+                #
+                # except TypeError:
+                    new_module.children[parent_slot] = FactoryModule.FromYaml(
+                        yaml_object=yaml_object['children'][parent_slot], factory=factory)
 
-            for module_template in factory.modules_list:
-                if module_template.TYPE == yaml_object['type']:
-                    new_module = copy.deepcopy(module_template)
-                    break
-
-            if new_module.TYPE == None:
-                    assert RuntimeError("Module not implemented")
-
-            new_module.id = yaml_object['id']
-
-            try:
-                new_module.orientation = yaml_object['orientation']
-            except KeyError:
-                new_module.orientation = 0
-
-            try:
-                new_module.rgb = (
-                    yaml_object['params']['red'],
-                    yaml_object['params']['green'],
-                    yaml_object['params']['blue'],
-                )
-            except KeyError:
-                pass
-
-            if 'children' in yaml_object:
-                for parent_slot in yaml_object['children']:
-                    # Try first to load a robot from the modules, else use the factory
-                    # try:
-                    #     new_module.children[parent_slot] = super().FromYaml(yaml_object['children'][parent_slot])
-                    #
-                    # except TypeError:
-                        new_module.children[parent_slot] = FactoryModule.FromYaml(
-                            yaml_object=yaml_object['children'][parent_slot], factory=factory)
-
-            return new_module
+        return new_module
 
     def to_sdf(self, tree_depth='', parent_link=None, child_link=None):
-        from ..SDF.geometry import Material
+        from pyfactory.SDF.geometry import Material
 
         visual = self.SDF_VISUAL
         material = Material(

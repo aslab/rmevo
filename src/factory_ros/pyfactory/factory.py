@@ -1,6 +1,8 @@
 from xml.etree.ElementTree import ElementTree
 
 from pyfactory.rmevo_module import FactoryModule
+from pyfactory.rmevo_bot import RMEvoBot
+
 from pyfactory import SDF
 from enum import Enum
 
@@ -158,11 +160,14 @@ class Factory:
 
         logger.info("Number of imported modules is: %d", len(self.modules_list))
 
-
-
     def get_modules_list(self):
         return self.modules_list
 
+    def generate_sdf(self, robot_name, yaml_string):
+        robot = RMEvoBot(self_factory=self)
+        logger.info("Generating SDF for robot: " + robot_name)
+        robot.load_yaml(yaml_string)
+        return robot.to_sdf()
 
 class Alphabet(Enum):
     # MorphologyMountingCommands

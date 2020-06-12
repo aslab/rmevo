@@ -17,6 +17,7 @@ add_service_files(
   FILES
   ImportModules.srv
   OutputString.srv
+  RobotConfiguration.srv
 )
 
 generate_messages(

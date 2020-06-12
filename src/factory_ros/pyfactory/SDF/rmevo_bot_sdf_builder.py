@@ -2,12 +2,13 @@ import math
 import xml.etree.ElementTree
 
 from pyfactory import SDF
-from pyfactory.rmevo_module import Orientation, BoxSlot, FactoryModule
+#from pyfactory.rmevo_module import Orientation, FactoryModule
 
 
 def rmevo_bot_to_sdf(robot, robot_pose, nice_format, self_collide=True):
     from xml.etree import ElementTree
     from pyfactory import SDF
+    from pyfactory.rmevo_module import Orientation, FactoryModule
 
     sdf_root = ElementTree.Element('sdf', {'version': '1.6'})
 
@@ -125,7 +126,7 @@ def _sdf_attach_module(module_slot, module_orientation: float,
     #collision.translate(collision.to_parent_direction(old_translation))
 
 
-def _module_to_sdf(module, parent_link, parent_slot: BoxSlot, parent_collision, slot_chain, self_collide):
+def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chain, self_collide):
     """
     Recursive function that takes a module and returns a list of SDF links and joints that
     that module and his children have generated.
