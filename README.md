@@ -26,8 +26,9 @@ The RMEvo framework is composed by three main nodes:
   - The ROS structure allows external nodes to control the robot in the simulation
 
 The relation between them is shown in the following image:
-
-![Nodes_relations](https://github.com/aslab/rmevo/blob/master/images/Nodes.svg)
+<p align="center">
+  <img src="https://github.com/aslab/rmevo/blob/master/images/Nodes.svg" width="600">
+</p>
 
 ### Centipede robot
 The centipede robot is a basic modular robot designed as a test to show the main problems that the RMEvo has to solve.
@@ -37,7 +38,9 @@ It is a centipede-like robot formed by basic modules joined together. Its modula
 The robot is defined in the package Centipede_description, a ROS package that contains the urdf models of the basic components of the robot.
 
 A module composed of one body and two legs is shown behind:
-![Two-legged module](https://github.com/aslab/rmevo/blob/master/images/centipede_module.png)
+<p align="center">
+  <img src="https://github.com/aslab/rmevo/blob/master/images/centipede_module.png" width="600">
+</p>
 
 The instructions to build the repo and launch the basic world are the following:
 
