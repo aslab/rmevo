@@ -1,7 +1,7 @@
 import cairo
 from .canvas import Canvas
 from .grid import Grid
-from ..rmevo_module import RMEvoModule, CoreModule, BrickModule, ActiveHingeModule, TouchSensorModule, BrickSensorModule, FactoryModule
+from ..rmevo_module import RMEvoModule
 from ...custom_logging.logger import logger
 
 

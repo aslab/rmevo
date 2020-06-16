@@ -4,7 +4,7 @@ import logging
 import sys
 
 
-def create_logger(name='revolve', level=logging.DEBUG, handlers=None):
+def create_logger(name='rmevo_core', level=logging.DEBUG, handlers=None):
     _logger = logging.getLogger(name)
     _logger.setLevel(level)
     handlers = logging.StreamHandler(sys.stdout) if handlers is None else handlers
@@ -20,14 +20,7 @@ def create_logger(name='revolve', level=logging.DEBUG, handlers=None):
 
 # General logger to standard output
 logger = create_logger(
-    name='revolve',
+    name='rmevo_core',
     level=logging.DEBUG,
-    handlers=[logging.StreamHandler(sys.stdout), logging.FileHandler('./revolve.log', mode='a')]
-)
-
-# Genotype logger for logging mutation and crossover details to a file
-genotype_logger = create_logger(
-    name='genotype',
-    level=logging.INFO,
-    handlers=logging.FileHandler('./genotype.log', mode='a')
+    handlers=[logging.StreamHandler(sys.stdout), logging.FileHandler('./rmevo_core.log', mode='a')]
 )

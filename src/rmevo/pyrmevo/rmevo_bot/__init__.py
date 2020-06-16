@@ -3,8 +3,7 @@ import yaml
 from collections import OrderedDict
 
 from .rmevo_bot import RMEvoBot
-from .rmevo_module import RMEvoModule, BoxSlot
-from .factory import Factory
+from .rmevo_module import RMEvoModule
 
 
 def represent_ordereddict(dumper, data):

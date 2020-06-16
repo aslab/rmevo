@@ -22,7 +22,21 @@ endif()
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  rospy
   roscpp
+  std_msgs
+  message_generation
+)
+
+add_service_files(
+  FILES
+  OutputString.srv
+  RobotConfiguration.srv
+)
+
+generate_messages(
+    DEPENDENCIES
+    std_msgs
 )
 
 find_package(gazebo REQUIRED)
@@ -30,7 +44,7 @@ find_package(gazebo REQUIRED)
 catkin_package(
   INCLUDE_DIRS
   LIBRARIES
-  CATKIN_DEPENDS roscpp
+  CATKIN_DEPENDS rospy roscpp
 )
 
 include_directories(include
@@ -41,7 +55,7 @@ include_directories(include
 link_directories()
 
 link_directories(${GAZEBO_LIBRARY_DIRS})
-catkin_install_python(PROGRAMS rmevo.py
+catkin_install_python(PROGRAMS src/run_rmevo.py
     DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

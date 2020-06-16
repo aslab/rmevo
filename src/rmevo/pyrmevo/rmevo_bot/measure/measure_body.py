@@ -1,7 +1,7 @@
 import math
 from ..render.render import Render
 from ..render.grid import Grid
-from ..rmevo_module import ActiveHingeModule, BrickModule, TouchSensorModule, BrickSensorModule, CoreModule, FactoryModule
+from ..rmevo_module import RMEvoModule
 from ...custom_logging.logger import logger
 
 
@@ -41,14 +41,8 @@ class MeasureBody:
         self.sensors = None
         # Body symmetry
         self.symmetry = None
-        # Number of active joints
-        self.hinge_count = None
-        # Number of bricks
-        self.brick_count = None
-        # Number of brick sensors
-        self.brick_sensor_count = None
-        # Number of touch sensors
-        self.touch_sensor_count = None
+        # Number of modules
+        self.rmevo_module_count = None
         # Number of free slots
         self.free_slots = None
         # Maximum number of modules allowed (sensors excluded)
@@ -69,11 +63,8 @@ class MeasureBody:
                 for core_slot, child_module in module.iter_children():
                     if child_module is None:
                         continue
-                    if not isinstance(child_module, TouchSensorModule) and not isinstance(child_module, BrickSensorModule):
-                        children_count += 1
+                    children_count += 1
                     self.count_branching_bricks(child_module, False)
-                if (isinstance(module, BrickModule) and children_count == 3) or (isinstance(module, CoreModule) and children_count == 4):
-                    self.branching_modules_count += 1
         except Exception as e:
             logger.exception(f'Exception: {e}. \nFailed counting branching bricks')
 
@@ -301,11 +292,7 @@ class MeasureBody:
         """
         try:
             if init:
-                self.hinge_count = 0
-                self.brick_count = 0
-                self.brick_sensor_count = 0
-                self.touch_sensor_count = 0
-                self.factory_module_count = 0
+                self.rmevo_module = 0
 
             if module is None:
                 module = self.body

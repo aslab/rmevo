@@ -1,0 +1,5 @@
+string model_name                 # name of the model to be spawn
+string model_yaml                 # this should be a yaml string
+---
+bool success                      # return true if spawn successful
+string status_message             # comments if available
