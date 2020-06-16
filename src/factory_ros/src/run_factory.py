@@ -38,10 +38,13 @@ class FactoryNode:
     # Gets the modules list from the factory class
     def get_modules_list(self, _req):
         modules_list = self.factory.get_modules_list()
+        modules_string = ""
+
         logger.info("Available modules are: ")
         for item in modules_list:
             logger.info("\t" + item.TYPE)
-        return []
+            modules_string = modules_string + item.TYPE + "\n"
+        return modules_string
 
     def set_pose(self, position=[0, 0, 0], orientation=[0, 0, 0]):
         from geometry_msgs.msg import Pose
@@ -74,7 +77,7 @@ class FactoryNode:
     # Registers all the services the node offers
     def advertise_services(self):
         rospy.Service(rospy.get_name() + '/load_modules', ImportModules, self.import_modules_from_dir)
-        rospy.Service(rospy.get_name() + '/list_modules', Empty, self.get_modules_list)
+        rospy.Service(rospy.get_name() + '/list_modules', OutputString, self.get_modules_list)
         rospy.Service(rospy.get_name() + '/generate_robot', RobotConfiguration, self.generate_robot)
 
 
