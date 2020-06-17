@@ -1,4 +1,4 @@
-from pyrevolve.evolution.selection import multiple_selection
+from pyrmevo.evolution.selection import multiple_selection
 
 
 def steady_state_population_management(old_individuals, new_individuals, selector):

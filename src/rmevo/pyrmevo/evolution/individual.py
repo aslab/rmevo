@@ -10,18 +10,9 @@ class Individual:
         :param phenotype (optional): phenotype of the individual
         """
         self.genotype = genotype
-        self.phenotype = phenotype
         self.fitness = None
         self.parents = None
         self.failed_eval_attempt_count = 0
-
-    def develop(self):
-        """
-        Develops genotype into a intermediate phenotype
-
-        """
-        if self.phenotype is None:
-            self.phenotype = self.genotype.develop()
 
     @property
     def id(self):
@@ -35,10 +26,6 @@ class Individual:
     def export_genotype(self, folder):
         self.genotype.export_genotype(f'{folder}/genotypes/genotype_{self.phenotype.id}.txt')
 
-    def export_phenotype(self, folder):
-        if self.phenotype is not None:
-            self.phenotype.save_file(f'{folder}/phenotypes/{self.phenotype.id}.yaml', conf_type='yaml')
-
     def export_fitness(self, folder):
         """
         It's saving the fitness into a file. The fitness can be a floating point number or None
@@ -49,7 +36,6 @@ class Individual:
 
     def export(self, folder):
         self.export_genotype(folder)
-        self.export_phenotype(folder)
         self.export_fitness(folder)
 
     def __repr__(self):

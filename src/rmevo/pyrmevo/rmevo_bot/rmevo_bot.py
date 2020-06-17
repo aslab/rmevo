@@ -22,13 +22,6 @@ class RMEvoBot:
     def __init__(self, _id=None, self_collide=True, self_factory=None):
         self._id = _id
         self._body = None
-        self._brain = None
-        self._morphological_measurements = None
-        self._brain_measurements = None
-        self._behavioural_measurements = None
-        self.self_collide = self_collide
-        self.battery_level = 0.0
-        self.new_module = None
         self.factory = self_factory
 
     @property
@@ -39,9 +32,8 @@ class RMEvoBot:
     def body(self):
         return self._body
 
-    @property
-    def brain(self):
-        return self._brain
+    def set_body(self, new_body):
+        self._body = new_body
 
     def size(self):
         robot_size = 1 + self._recursive_size_measurement(self._body)

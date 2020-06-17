@@ -34,7 +34,7 @@ class FactoryInfo:
         modules_string = modules_string.split("\n")
         for module in modules_string:
             if module is not '':
-                new_module = RMEvoModule
+                new_module = RMEvoModule()
                 new_module.TYPE = module
                 self.modules_list.append(new_module)
 

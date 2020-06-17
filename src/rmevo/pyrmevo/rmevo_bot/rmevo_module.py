@@ -32,7 +32,7 @@ class RMEvoModule:
         self.orientation = None
         self.rgb = None  # RevolveModule.DEFAULT_COLOR
         self.substrate_coordinates = None
-        self.children = [None, None, None, None]
+        self.children = []
         self.info = None
         self.robot = None
 
@@ -75,13 +75,6 @@ class RMEvoModule:
                 has_children = True
 
         return children if has_children else None
-
-    def validate(self):
-        """
-        Tests if the robot tree is valid (recursively)
-        :return: True if the robot tree is valid
-        """
-        raise RuntimeError("Robot tree validation not yet implemented")
 
     def has_children(self):
         """

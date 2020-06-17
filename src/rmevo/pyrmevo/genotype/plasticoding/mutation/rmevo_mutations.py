@@ -1,6 +1,5 @@
 import random
-from pyrevolve.genotype.plasticoding.plasticoding import Alphabet, Plasticoding
-from ....custom_logging.logger import genotype_logger
+from pyrmevo.genotype.plasticoding.plasticoding import Plasticoding
 
 
 

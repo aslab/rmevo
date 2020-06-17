@@ -1,100 +1,13 @@
 # no mother classes have been defined yet! not sure how to separate the the filed in folders...
 
 from enum import Enum
-from pyrevolve.genotype import Genotype
-from pyrevolve.rmevo_bot import RMEvoBot
-from pyrevolve.rmevo_bot.rmevo_module import Orientation
-from pyrevolve.rmevo_bot.rmevo_module import CoreModule, FactoryModule
-from pyrevolve.rmevo_bot.rmevo_module import ActiveHingeModule
-from pyrevolve.rmevo_bot.rmevo_module import BrickModule
-from pyrevolve.rmevo_bot.rmevo_module import TouchSensorModule
-from pyrevolve.rmevo_bot.brain.brain_nn import BrainNN
-from pyrevolve.rmevo_bot.brain.brain_nn import Node
-from pyrevolve.rmevo_bot.brain.brain_nn import Connection
-from pyrevolve.rmevo_bot.brain.brain_nn import Params
+from pyrmevo.genotype import Genotype
+from pyrmevo.rmevo_bot import RMEvoBot
 from ...custom_logging.logger import logger
 import random
 import math
 import copy
 import itertools
-
-
-class Alphabet(Enum):
-
-    # Modules
-    CORE_COMPONENT = 'C'
-    JOINT_HORIZONTAL = 'AJ1'
-    JOINT_VERTICAL = 'AJ2'
-    BLOCK = 'B'
-    SENSOR = 'ST'
-
-    # MorphologyMountingCommands
-    ADD_RIGHT = 'addr'
-    ADD_FRONT = 'addf'
-    ADD_LEFT = 'addl'
-
-    # MorphologyMovingCommands
-    MOVE_RIGHT = 'mover'
-    MOVE_FRONT = 'movef'
-    MOVE_LEFT = 'movel'
-    MOVE_BACK = 'moveb'
-
-    # ControllerChangingCommands
-    ADD_EDGE = 'brainedge'
-    MUTATE_EDGE = 'brainperturb'
-    LOOP = 'brainloop'
-    MUTATE_AMP = 'brainampperturb'
-    MUTATE_PER = 'brainperperturb'
-    MUTATE_OFF = 'brainoffperturb'
-
-    # ControllerMovingCommands
-    MOVE_REF_S = 'brainmoveFTS'
-    MOVE_REF_O = 'brainmoveTTS'
-
-    @staticmethod
-    def modules():
-        return [
-            [Alphabet.CORE_COMPONENT, []],
-            [Alphabet.JOINT_HORIZONTAL, []],
-            [Alphabet.JOINT_VERTICAL, []],
-            [Alphabet.BLOCK, []],
-            [Alphabet.SENSOR, []],
-        ]
-
-    @staticmethod
-    def morphology_mounting_commands():
-        return [
-            [Alphabet.ADD_RIGHT, []],
-            [Alphabet.ADD_FRONT, []],
-            [Alphabet.ADD_LEFT, []]
-        ]
-
-    @staticmethod
-    def morphology_moving_commands():
-        return [
-            [Alphabet.MOVE_RIGHT, []],
-            [Alphabet.MOVE_FRONT, []],
-            [Alphabet.MOVE_LEFT, []],
-            [Alphabet.MOVE_BACK, []]
-        ]
-
-    @staticmethod
-    def controller_changing_commands():
-        return [
-            [Alphabet.ADD_EDGE, []],
-            [Alphabet.MUTATE_EDGE, []],
-            [Alphabet.LOOP, []],
-            [Alphabet.MUTATE_AMP, []],
-            [Alphabet.MUTATE_PER, []],
-            [Alphabet.MUTATE_OFF, []]
-        ]
-
-    @staticmethod
-    def controller_moving_commands():
-        return [
-            [Alphabet.MOVE_REF_S, []],
-            [Alphabet.MOVE_REF_O, []]
-        ]
 
 
 class Plasticoding(Genotype):
@@ -757,44 +670,25 @@ class Plasticoding(Genotype):
         return symbol
 
 
-class NodeExtended(Node):
-    def __init__(self):
-        super().__init__()
-        self.weight = None
-        self.input_nodes = []
-        self.output_nodes = []
-        self.params = None
-
-
-from pyrevolve.genotype.plasticoding import initialization
+from pyrmevo.genotype.plasticoding import initialization
 
 
 class PlasticodingConfig:
     def __init__(self,
-                 initialization_genome=initialization.random_initialization,
+                 initialization_genome=initialization.rmevo_random_initialization,
                  e_max_groups=3,
-                 oscillator_param_min=1,
-                 oscillator_param_max=10,
-                 weight_param_min=-1,
-                 weight_param_max=1,
-                 weight_min=-1,
-                 weight_max=1,
-                 axiom_w=Alphabet.CORE_COMPONENT,
+                 axiom_w=None,
                  i_iterations=3,
                  max_structural_modules=100,
                  robot_id=0,
-                 factory=None
+                 factory=None,
+                 empty_child_prob=0.5
                  ):
         self.initialization_genome = initialization_genome
         self.e_max_groups = e_max_groups
-        self.oscillator_param_min = oscillator_param_min
-        self.oscillator_param_max = oscillator_param_max
-        self.weight_param_min = weight_param_min
-        self.weight_param_max = weight_param_max
-        self.weight_min = weight_min
-        self.weight_max = weight_max
         self.axiom_w = axiom_w
         self.i_iterations = i_iterations
         self.max_structural_modules = max_structural_modules
         self.robot_id = robot_id
         self.factory = factory
+        self.empty_child_prob = empty_child_prob

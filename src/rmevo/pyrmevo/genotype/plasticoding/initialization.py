@@ -1,103 +1,31 @@
-from pyrevolve.genotype.plasticoding.plasticoding import Plasticoding
-from pyrevolve.genotype.plasticoding.plasticoding import Alphabet
 import random
+import copy
+
+from pyrmevo.rmevo_bot.rmevo_bot import RMEvoBot
 
 
-def _generate_random_grammar(conf):
-    """
-    Initializing a new genotype,
-    :param conf: e_max_groups, maximum number of groups of symbols
-    :return: a random new Genome
-    :rtype: dictionary
-    """
-    s_segments = random.randint(1, conf.e_max_groups)
-    grammar = {}
+def generate_random_children(conf):
+    if random.random() > conf.empty_child_prob:
+        new_module = copy.deepcopy(conf.factory.modules_list[random.randint(0, len(conf.factory.modules_list)-1)])
 
-    for symbol in Alphabet.modules():
+        for i in [0, len(new_module.children) - 1]:
+            new_module.children[i] = generate_random_children(conf)
 
-        if symbol[0] == conf.axiom_w:
-            grammar[symbol[0]] = [[conf.axiom_w, []]]
-        else:
-            grammar[symbol[0]] = []
+        return new_module
 
-        for s in range(0, s_segments):
-            symbol_module = random.randint(
-                1, len(Alphabet.modules()) - 1)
-            symbol_mounting = random.randint(
-                0, len(Alphabet.morphology_mounting_commands()) - 1)
-            symbol_morph_moving = random.randint(
-                0, len(Alphabet.morphology_moving_commands()) - 1)
-            symbol_contr_moving = random.randint(
-                0, len(Alphabet.controller_moving_commands()) - 1)
-            symbol_changing = random.randint(
-                0, len(Alphabet.controller_changing_commands()) - 1)
-
-            grammar[symbol[0]].extend([
-                Plasticoding.build_symbol(
-                    Alphabet.controller_moving_commands()[symbol_contr_moving], conf),
-                Plasticoding.build_symbol(
-                    Alphabet.controller_changing_commands()[symbol_changing], conf),
-                Plasticoding.build_symbol(
-                    Alphabet.morphology_mounting_commands()[symbol_mounting], conf),
-                Plasticoding.build_symbol(
-                    Alphabet.modules()[symbol_module], conf),
-                Plasticoding.build_symbol(
-                    Alphabet.morphology_moving_commands()[symbol_morph_moving], conf),
-            ])
-    return grammar
+    else:
+        return None
 
 
-def random_initialization(conf, next_robot_id):
-    """
-    Initializing a random genotype.
-    :type conf: PlasticodingConfig
-    :return: a Genome
-    :rtype: Plasticoding
-    """
-    genotype = Plasticoding(conf, next_robot_id)
-    genotype.grammar = _generate_random_grammar(conf)
-       
-    return genotype
+def generate_random_body(conf):
+    modules_number = len(conf.factory.modules_list)
+    module_template = conf.factory.modules_list[random.randint(0, modules_number-1)]
+    new_body = copy.deepcopy(module_template)
 
+    for i in enumerate(new_body.children):
+        new_body.children[i] = generate_random_children(conf)
 
-def _generate_rmevo_random_grammar(conf):
-    """
-    Initializing a new genotype,
-    :param conf: e_max_groups, maximum number of groups of symbols
-    :return: a random new Genome
-    :rtype: dictionary
-    """
-
-    from ...rmevo_bot.factory import Alphabet
-
-    s_segments = random.randint(1, conf.e_max_groups)
-    grammar = {}
-
-    for symbol in Alphabet.modules(conf.factory):
-
-        if symbol[0] == conf.axiom_w:
-            grammar[symbol[0]] = [[conf.axiom_w, []]]
-        else:
-            grammar[symbol[0]] = []
-
-        for s in range(0, s_segments):
-            #TODO Change mounting commands selection to uniform probability
-            symbol_module = random.randint(
-                1, len(Alphabet.modules(conf.factory)) - 1)
-            symbol_mounting = random.randint(
-                0, len(Alphabet.morphology_mounting_commands()) - 1)
-            symbol_morph_moving = random.randint(
-                0, len(Alphabet.morphology_moving_commands()) - 1)
-
-            grammar[symbol[0]].extend([
-                Plasticoding.build_symbol(
-                    Alphabet.morphology_mounting_commands()[symbol_mounting], conf),
-                Plasticoding.build_symbol(
-                    Alphabet.modules(conf.factory)[symbol_module], conf),
-                Plasticoding.build_symbol(
-                    Alphabet.morphology_moving_commands()[symbol_morph_moving], conf),
-            ])
-    return grammar
+    return new_body
 
 
 def rmevo_random_initialization(conf, next_robot_id):
@@ -107,7 +35,8 @@ def rmevo_random_initialization(conf, next_robot_id):
     :return: a Genome
     :rtype: Plasticoding
     """
-    genotype = Plasticoding(conf, next_robot_id)
-    genotype.grammar = _generate_rmevo_random_grammar(conf)
 
-    return genotype
+    new_individual = RMEvoBot(_id=next_robot_id, self_factory=conf.factory)
+    new_individual.set_body(generate_random_body(conf))
+
+    return new_individual

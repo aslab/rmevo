@@ -1,8 +1,6 @@
 # [(G,P), (G,P), (G,P), (G,P), (G,P)]
 
-from pyrevolve.evolution.individual import Individual
-from pyrevolve.SDF.math import Vector3
-from pyrevolve.tol.manage import measures
+from pyrmevo.evolution.individual import Individual
 from ..custom_logging.logger import logger
 import time
 import asyncio
@@ -86,82 +84,10 @@ class Population:
 
     def _new_individual(self, genotype):
         individual = Individual(genotype)
-        individual.develop()
-        self.conf.experiment_management.export_genotype(individual)
-        self.conf.experiment_management.export_phenotype(individual)
-        self.conf.experiment_management.export_phenotype_images(os.path.join('data_fullevolution', 'phenotype_images'), individual)
-        individual.phenotype.measure_phenotype()
-        # individual.phenotype.export_phenotype_measurements(self.conf.experiment_management.data_folder)
 
         return individual
 
-    async def load_individual(self, id):
-        data_path = self.conf.experiment_management.data_folder
-        genotype = self.conf.genotype_constructor(self.conf.genotype_conf, id)
-        genotype.load_genotype(os.path.join(data_path, 'genotypes', f'genotype_{id}.txt'))
-
-        individual = Individual(genotype)
-        individual.develop()
-        individual.phenotype.measure_phenotype()
-
-        with open(os.path.join(data_path, 'fitness', f'fitness_{id}.txt')) as f:
-            data = f.readlines()[0]
-            individual.fitness = None if data == 'None' else float(data)
-
-        with open(os.path.join(data_path, 'descriptors', f'behavior_desc_{id}.txt')) as f:
-            lines = f.readlines()
-            if lines[0] == 'None':
-                individual.phenotype._behavioural_measurements = None
-            else:
-                individual.phenotype._behavioural_measurements = measures.BehaviouralMeasurements()
-                for line in lines:
-                    if line.split(' ')[0] == 'velocity':
-                        individual.phenotype._behavioural_measurements.velocity = float(line.split(' ')[1])
-                    #if line.split(' ')[0] == 'displacement':
-                     #   individual.phenotype._behavioural_measurements.displacement = float(line.split(' ')[1])
-                    if line.split(' ')[0] == 'displacement_velocity':
-                        individual.phenotype._behavioural_measurements.displacement_velocity = float(line.split(' ')[1])
-                    if line.split(' ')[0] == 'displacement_velocity_hill':
-                        individual.phenotype._behavioural_measurements.displacement_velocity_hill = float(line.split(' ')[1])
-                    if line.split(' ')[0] == 'head_balance':
-                        individual.phenotype._behavioural_measurements.head_balance = float(line.split(' ')[1])
-                    if line.split(' ')[0] == 'contacts':
-                        individual.phenotype._behavioural_measurements.contacts = float(line.split(' ')[1])
-
-        return individual
-
-    async def load_snapshot(self, gen_num):
-        """
-        Recovers all genotypes and fitnesses of robots in the lastest selected population
-        :param gen_num: number of the generation snapshot to recover
-        """
-        data_path = self.conf.experiment_management.experiment_folder
-        for r, d, f in os.walk(data_path +'/selectedpop_'+str(gen_num)):
-            for file in f:
-                if 'body' in file:
-                    id = file.split('.')[0].split('_')[-2]+'_'+file.split('.')[0].split('_')[-1]
-                    self.individuals.append(await self.load_individual(id))
-
-    async def load_offspring(self, last_snapshot, population_size, offspring_size, next_robot_id):
-        """
-        Recovers the part of an unfinished offspring
-        :param
-        :return:
-        """
-        individuals = []
-        # number of robots expected until the latest snapshot
-        if last_snapshot == -1:
-            n_robots = 0
-        else:
-            n_robots = population_size + last_snapshot * offspring_size
-
-        for robot_id in range(n_robots+1, next_robot_id):
-            individuals.append(await self.load_individual('robot_'+str(robot_id)))
-
-        self.next_robot_id = next_robot_id
-        return individuals
-
-    async def init_pop(self, recovered_individuals=[]):
+    def init_pop(self, recovered_individuals=[]):
         """
         Populates the population (individuals list) with Individual objects that contains their respective genotype.
         """
@@ -170,10 +96,10 @@ class Population:
             self.individuals.append(individual)
             self.next_robot_id += 1
 
-        await self.evaluate(self.individuals, 0)
+        self.evaluate(self.individuals, 0)
         self.individuals = recovered_individuals + self.individuals
 
-    async def next_gen(self, gen_num, recovered_individuals=[]):
+    def next_gen(self, gen_num, recovered_individuals=[]):
         """
         Creates next generation of the population through selection, mutation, crossover
 
@@ -205,7 +131,7 @@ class Population:
             new_individuals.append(individual)
 
         # evaluate new individuals
-        await self.evaluate(new_individuals, gen_num)
+        self.evaluate(new_individuals, gen_num)
 
         new_individuals = recovered_individuals + new_individuals
 
@@ -221,26 +147,18 @@ class Population:
 
         return new_population
 
-    async def evaluate(self, new_individuals, gen_num, type_simulation = 'evolve'):
+    def evaluate(self, new_individuals, gen_num, type_simulation = 'evolve'):
         """
         Evaluates each individual in the new gen population
 
         :param new_individuals: newly created population after an evolution iteration
         :param gen_num: generation number
         """
-        # Parse command line / file input arguments
-        # await self.simulator_connection.pause(True)
         robot_futures = []
         for individual in new_individuals:
-            logger.info(f'Evaluating individual (gen {gen_num}) {individual.genotype.id} ...')
-            robot_futures.append(asyncio.ensure_future(self.evaluate_single_robot(individual)))
 
-        await asyncio.sleep(1)
-
-        for i, future in enumerate(robot_futures):
-            individual = new_individuals[i]
             logger.info(f'Evaluation of Individual {individual.phenotype.id}')
-            individual.fitness, individual.phenotype._behavioural_measurements = await future
+            individual.fitness, individual.phenotype._behavioural_measurements = self.evaluate_single_robot(individual)
 
             if individual.phenotype._behavioural_measurements is None:
                 assert (individual.fitness is None)
@@ -252,18 +170,10 @@ class Population:
             if type_simulation == 'evolve':
                 self.conf.experiment_management.export_fitness(individual)
 
-    async def evaluate_single_robot(self, individual):
+    def evaluate_single_robot(self, individual):
         """
         :param individual: individual
         :return: Returns future of the evaluation, future returns (fitness, [behavioural] measurements)
         """
-        if individual.phenotype is None:
-            individual.develop()
 
-        if self.analyzer_queue is not None:
-            collisions, _bounding_box = await self.analyzer_queue.test_robot(individual, self.conf)
-            if collisions > 0:
-                logger.info(f"discarding robot {individual} because there are {collisions} self collisions")
-                return None, None
-
-        return await self.simulator_queue.test_robot(individual, self.conf)
+        return self.simulator_queue.test_robot(individual, self.conf)

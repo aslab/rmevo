@@ -1,8 +1,6 @@
-from pyrevolve.genotype.plasticoding.plasticoding import Plasticoding
-from pyrevolve.rmevo_bot.factory import Alphabet
-from pyrevolve.evolution.individual import Individual
+from pyrmevo.genotype.plasticoding.plasticoding import Plasticoding
+from pyrmevo.evolution.individual import Individual
 import random
-from ....custom_logging.logger import genotype_logger
 
 
 def generate_child_genotype(parent_genotypes, genotype_conf, crossover_conf):
