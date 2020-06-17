@@ -3,6 +3,7 @@ import rospy
 from rmevo.srv import RobotConfiguration, OutputString
 
 from pyrmevo.custom_logging.logger import logger
+from pyrmevo.rmevo_bot.rmevo_module import RMEvoModule
 
 
 class FactoryInfo:
@@ -33,4 +34,14 @@ class FactoryInfo:
         modules_string = modules_string.split("\n")
         for module in modules_string:
             if module is not '':
-                self.modules_list.append(module)
+                new_module = RMEvoModule
+                new_module.TYPE = module
+                self.modules_list.append(new_module)
+
+    def send_robot_to_factory(self, name, robot):
+        logger.info("Spawning robot " + name)
+        serv_res = self.generate_service(name, robot)
+        if serv_res.success is True:
+            logger.info("Robot spawned correctly")
+        else:
+            logger.error("Error spawning robot")

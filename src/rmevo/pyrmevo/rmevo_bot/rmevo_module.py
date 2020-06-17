@@ -132,12 +132,7 @@ class RMEvoModule:
 
         if 'children' in yaml_object:
             for parent_slot in yaml_object['children']:
-                # Try first to load a robot from the modules, else use the factory
-                # try:
-                #     new_module.children[parent_slot] = super().FromYaml(yaml_object['children'][parent_slot])
-                #
-                # except TypeError:
-                    new_module.children[parent_slot] = FactoryModule.FromYaml(
-                        yaml_object=yaml_object['children'][parent_slot], factory=factory)
+                new_module.children[parent_slot] = RMEvoModule.FromYaml(
+                    yaml_object=yaml_object['children'][parent_slot], factory=factory)
 
         return new_module

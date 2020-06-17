@@ -17,24 +17,24 @@ async def run():
     """
     The main coroutine, which is started below.
     """
-    #robot_file_path = "rmevo/test/basic.yaml"
-    #robot_file_path = "rmevo/test/twomodules.yaml"
-    robot_file_path = "../test/basic_revolve.yaml"
-    #robot_file_path = "experiments/examples/yaml/spider.yaml"
+
+    # File with the yaml file
+    robot_file_path = "../test/centipede.yaml"
 
     # Parse command line / file input arguments
     settings = parser.parse_args()
 
-    # Init factory
+    # Load interface with factory: gets the factory services and the available modules
     factory_info = FactoryInfo()
 
-
-
-    # Load a robot from yaml
-    robot = rmevo_bot.RMEvoBot(self_factory=None)
+    # Load the robot from yaml
+    robot = rmevo_bot.RMEvoBot(self_factory=factory_info)
     logger.info("Loading Robot.")
     robot.load_file(robot_file_path)
-    robot.update_substrate()
 
-    # Calls the service and pases the robot yaml
-    generate_service('basic_test_robot', robot)
+    # Parse the robot back to yaml
+    # This means the core has imported correctly the robot structure
+    robot_yaml = robot.to_yaml()
+
+    # Calls the service and passes the robot yaml
+    factory_info.send_robot_to_factory('basic_test_robot', robot_yaml)
