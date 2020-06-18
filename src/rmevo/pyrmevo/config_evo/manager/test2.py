@@ -5,7 +5,7 @@ This file is a test that implements evolution using the available modules from t
 """
 
 
-from rmevo.src.factory_info import FactoryInfo
+from pyrmevo.factory.factory_info import FactoryInfo
 
 from pyrmevo.parser import parser
 from pyrmevo.custom_logging.logger import logger
@@ -19,7 +19,7 @@ from pyrmevo.genotype.plasticoding.crossover import rmevo_crossovers
 # from pyrmevo.genotype.plasticoding.initialization import random_initialization
 #
 from pyrmevo.genotype.plasticoding.mutation.mutation import MutationConfig
-from pyrmevo.genotype.plasticoding.mutation.rmevo_mutations import standard_mutation
+from pyrmevo.genotype.plasticoding.mutation.rmevo_mutations import standard_mutation, null_mutation
 from pyrmevo.genotype.plasticoding.plasticoding import PlasticodingConfig
 
 from pyrmevo.evolution import fitness
@@ -89,7 +89,7 @@ async def run():
         #genotype_constructor=random_initialization,
         genotype_conf=genotype_conf,
         fitness_function=fitness.stupid,
-        mutation_operator=standard_mutation,
+        mutation_operator=null_mutation,
         mutation_conf=mutation_conf,
         #crossover_operator=rmevo_crossovers.standard_crossover,
         crossover_operator=None,
@@ -115,7 +115,6 @@ async def run():
 
     while gen_num < num_generations-1:
         gen_num += 1
-        population = await population.next_gen(gen_num)
-        experiment_management.export_snapshots(population.individuals, gen_num)
+        population = population.next_gen(gen_num)
 
     # output result after completing all generations...

@@ -28,6 +28,9 @@ class RMEvoBot:
     def id(self):
         return self._id
 
+    def set_id(self, new_id):
+        self._id = new_id
+
     @property
     def body(self):
         return self._body

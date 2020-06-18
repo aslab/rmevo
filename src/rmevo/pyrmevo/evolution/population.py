@@ -120,7 +120,7 @@ class Population:
             else:
                 child = self.conf.selection(self.individuals)
 
-            child.genotype.id = self.next_robot_id
+            child.genotype.set_id(self.next_robot_id)
             self.next_robot_id += 1
 
             # Mutation operator
@@ -157,23 +157,19 @@ class Population:
         robot_futures = []
         for individual in new_individuals:
 
-            logger.info(f'Evaluation of Individual {individual.phenotype.id}')
-            individual.fitness, individual.phenotype._behavioural_measurements = self.evaluate_single_robot(individual)
+            logger.info(f'Evaluation of Individual {individual.id}')
+            individual.fitness = self.evaluate_single_robot(individual)
 
-            if individual.phenotype._behavioural_measurements is None:
-                assert (individual.fitness is None)
+            logger.info(f'Individual {individual.id} has a fitness of {individual.fitness}')
+            #TODO: Implement exporting
 
-            if type_simulation == 'evolve':
-                self.conf.experiment_management.export_behavior_measures(individual.phenotype.id, individual.phenotype._behavioural_measurements)
-
-            logger.info(f'Individual {individual.phenotype.id} has a fitness of {individual.fitness}')
-            if type_simulation == 'evolve':
-                self.conf.experiment_management.export_fitness(individual)
+            # if type_simulation == 'evolve':
+            #     self.conf.experiment_management.export_fitness(individual)
 
     def evaluate_single_robot(self, individual):
         """
         :param individual: individual
-        :return: Returns future of the evaluation, future returns (fitness, [behavioural] measurements)
+        :return: Returns fitness of individual
         """
 
-        return self.simulator_queue.test_robot(individual, self.conf)
+        return self.conf.fitness_function(None, individual)

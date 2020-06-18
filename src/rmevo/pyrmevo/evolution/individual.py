@@ -17,10 +17,7 @@ class Individual:
     @property
     def id(self):
         _id = None
-        if self.phenotype is not None:
-            _id = self.phenotype.id
-        elif self.genotype.id is not None:
-            _id = self.genotype.id
+        _id = self.genotype.id
         return _id
 
     def export_genotype(self, folder):

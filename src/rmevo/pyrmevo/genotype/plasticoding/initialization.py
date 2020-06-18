@@ -35,8 +35,8 @@ def rmevo_random_initialization(conf, next_robot_id):
     :return: a Genome
     :rtype: Plasticoding
     """
-
-    new_individual = RMEvoBot(_id=next_robot_id, self_factory=conf.factory)
+    robot_id = "Robot_0_" + str(next_robot_id)
+    new_individual = RMEvoBot(_id=robot_id, self_factory=conf.factory)
     new_individual.set_body(generate_random_body(conf))
 
     return new_individual

@@ -2,8 +2,6 @@ import random
 from pyrmevo.genotype.plasticoding.plasticoding import Plasticoding
 
 
-
-
 def handle_deletion(genotype):
     """
     Deletes symbols from genotype
@@ -127,3 +125,7 @@ def standard_mutation(genotype, mutation_conf):
             raise Exception(
                 'mutation_type value was not in the expected range (1,3). The value was: {}'.format(mutation_type))
         return modified_genotype
+
+
+def null_mutation(genotype, mutation_conf):
+    return genotype
