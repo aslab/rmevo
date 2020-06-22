@@ -97,6 +97,11 @@ namespace gazebo
         }
 
         res.robot_fitness = model->GetChildCount();
+        ROS_INFO_NAMED("WorldControl", "A total of %f children were found.", res.robot_fitness);
+        for (int i = 0; i < res.robot_fitness; i++){
+            gazebo::physics::BasePtr child = model->GetChild(i);
+            ROS_INFO_NAMED("WorldControl", "Child named %s was found.", child->GetName().c_str());
+        }
         res.success = true;
         return true;
     }
