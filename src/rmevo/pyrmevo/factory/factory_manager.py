@@ -6,7 +6,7 @@ from pyrmevo.custom_logging.logger import logger
 from pyrmevo.rmevo_bot.rmevo_module import RMEvoModule
 
 
-class FactoryInfo:
+class FactoryManager:
     modules_list = None
 
     def __init__(self):

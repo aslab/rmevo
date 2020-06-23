@@ -5,7 +5,8 @@ This file is a test that implements evolution using the available modules from t
 """
 
 
-from pyrmevo.factory.factory_info import FactoryInfo
+from pyrmevo.factory.factory_manager import FactoryManager
+from pyrmevo.gazebo.gazebo_manager import GazeboManager
 
 from pyrmevo.parser import parser
 from pyrmevo.custom_logging.logger import logger
@@ -39,7 +40,10 @@ async def run():
     """
 
     # Load interface with factory: gets the factory services and the available modules
-    factory_info = FactoryInfo()
+    factory_manager = FactoryManager()
+
+    # Load interface with gazebo: gets services
+    gazebo_manager = GazeboManager()
 
     # experiment params #
     num_generations = 5
@@ -48,7 +52,7 @@ async def run():
 
     genotype_conf = PlasticodingConfig(
         max_structural_modules=10,
-        factory=factory_info,
+        factory=factory_manager,
         axiom_w='Core',
         empty_child_prob=0.5
     )
@@ -60,6 +64,11 @@ async def run():
 
     crossover_conf = CrossoverConfig(
         crossover_prob=0.8,
+    )
+
+    fitness_conf = fitness.FitnessManager(
+        gazebo_manager=gazebo_manager,
+        factory_manager=factory_manager
     )
     # experiment params #
 
@@ -88,7 +97,7 @@ async def run():
         genotype_constructor=rmevo_random_initialization,
         #genotype_constructor=random_initialization,
         genotype_conf=genotype_conf,
-        fitness_function=fitness.stupid,
+        fitness_conf=fitness_conf,
         mutation_operator=null_mutation,
         mutation_conf=mutation_conf,
         #crossover_operator=rmevo_crossovers.standard_crossover,

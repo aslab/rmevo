@@ -32,6 +32,7 @@ add_service_files(
   FILES
   OutputString.srv
   RobotConfiguration.srv
+  FitnessEvaluation.srv
 )
 
 generate_messages(

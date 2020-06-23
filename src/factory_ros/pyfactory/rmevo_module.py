@@ -61,7 +61,7 @@ class RMEvoModule:
     def __init__(self):
         self.id = None
         self.orientation = None
-        self.rgb = None  # RevolveModule.DEFAULT_COLOR
+        self.rgb = self.DEFAULT_COLOR
         self.substrate_coordinates = None
         self.children = [None, None, None, None]
         self.info = None

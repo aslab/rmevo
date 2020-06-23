@@ -127,8 +127,8 @@ class RMEvoBot:
         yaml_dict = OrderedDict()
         yaml_dict['id'] = self._id
         yaml_dict['body'] = self._body.to_yaml()
-        if self._brain is not None:
-            yaml_dict['brain'] = self._brain.to_yaml()
+        # if self._brain is not None:
+        #     yaml_dict['brain'] = self._brain.to_yaml()
 
         return yaml.dump(yaml_dict)
 

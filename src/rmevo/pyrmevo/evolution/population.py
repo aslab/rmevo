@@ -12,7 +12,7 @@ class PopulationConfig:
                  population_size: int,
                  genotype_constructor,
                  genotype_conf,
-                 fitness_function,
+                 fitness_conf,
                  mutation_operator,
                  mutation_conf,
                  crossover_operator,
@@ -32,7 +32,7 @@ class PopulationConfig:
         :param population_size: size of the population
         :param genotype_constructor: class of the genotype used
         :param genotype_conf: configuration for genotype constructor
-        :param fitness_function: function that takes in a `RobotManager` as a parameter and produces a fitness for the robot
+        :param fitness_conf: configuration for the fitness evaluation
         :param mutation_operator: operator to be used in mutation
         :param mutation_conf: configuration for mutation operator
         :param crossover_operator: operator to be used in crossover
@@ -47,7 +47,7 @@ class PopulationConfig:
         self.population_size = population_size
         self.genotype_constructor = genotype_constructor
         self.genotype_conf = genotype_conf
-        self.fitness_function = fitness_function
+        self.fitness_manager = fitness_conf
         self.mutation_operator = mutation_operator
         self.mutation_conf = mutation_conf
         self.crossover_operator = crossover_operator
@@ -172,4 +172,4 @@ class Population:
         :return: Returns fitness of individual
         """
 
-        return self.conf.fitness_function(None, individual)
+        return self.conf.fitness_manager.evaluate_fitness(individual)

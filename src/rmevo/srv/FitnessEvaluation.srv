@@ -1,0 +1,5 @@
+string robot_id
+---
+bool success
+string status_message
+float32 robot_fitness
