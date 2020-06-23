@@ -34,7 +34,7 @@ class GazeboManager:
         logger.info("Asking for fitness of robot " + robot_name)
         serv_res = self.fitness_service(robot_name)
         if serv_res.success is True:
-            logger.info("Fitness of robot " + robot_name + "is " + str(serv_res.robot_fitness))
+            logger.info("Fitness of robot " + robot_name + " is " + str(serv_res.robot_fitness))
             return serv_res.robot_fitness
         else:
             logger.error("An error occurred while asking for the fitness: " + serv_res.status_message)
@@ -47,7 +47,7 @@ class GazeboManager:
         serv_res = self.delete_model_service(robot_name)
 
         if serv_res.success is True:
-            logger.info("Robot with name " + robot_name + "deleted sucessfully.")
+            logger.info("Robot with name " + robot_name + " deleted sucessfully.")
             return True
         else:
             logger.error("An error occurred while deleting the model: " + serv_res.status_message)

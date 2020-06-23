@@ -120,7 +120,7 @@ class Population:
             else:
                 child = self.conf.selection(self.individuals)
 
-            child.genotype.set_id(self.next_robot_id)
+            child.genotype.set_id("Robot_" + str(self.next_robot_id))
             self.next_robot_id += 1
 
             # Mutation operator
