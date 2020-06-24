@@ -1,12 +1,13 @@
 import rospy
 
-from gazebo_msgs.srv import SpawnModel
+from gazebo_msgs.srv import SpawnModel, DeleteModel
 from rmevo_gazebo.srv import FitnessEvaluation
 
 from geometry_msgs.msg import Pose
 
 spawn_service = rospy.ServiceProxy('/gazebo/spawn_sdf_model', SpawnModel)
 fitness_service = rospy.ServiceProxy('/worldcontrol/evaluate_fitness', FitnessEvaluation)
+delete_service = rospy.ServiceProxy('/gazebo/delete_model', DeleteModel)
 
 with open('centipede.sdf', 'r') as robot_file:
     robot = robot_file.read()
@@ -31,4 +32,6 @@ rospy.sleep(10)
 
 # Eval fitness
 fitness = fitness_service('centipede_robot')
+delete_service('centipede_robot')
+
 print(fitness)
