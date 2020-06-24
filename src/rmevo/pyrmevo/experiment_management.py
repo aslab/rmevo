@@ -1,8 +1,7 @@
 import os
 import shutil
 import numpy as np
-from pyrevolve.custom_logging.logger import logger
-import sys
+from pyrmevo.custom_logging.logger import logger
 
 
 class ExperimentManagement:

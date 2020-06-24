@@ -71,3 +71,27 @@ parser.add_argument(
     type=str,
     help="RMEvo manager"
 )
+
+parser.add_argument(
+    '--experiment-name',
+    default='default_experiment', type=str,
+    help="Name of current experiment. A folder with this name will be created. Default to \"default_experiment\"."
+)
+
+parser.add_argument(
+    '--run',
+    default='1', type=str,
+    help="Run of repetition of an experiment. Default to \"1\"."
+)
+
+parser.add_argument(
+    '--recovery-enabled',
+    default=True, type=str_to_bool,
+    help="Whether the recovery is enabled (save and load the recovery both). Default \"True\"."
+)
+
+parser.add_argument(
+    '--export-phenotype',
+    default=True, type=str_to_bool,
+    help="Exports yamls with the phenotypes. Default \"True\"."
+)

@@ -85,6 +85,11 @@ class Population:
     def _new_individual(self, genotype):
         individual = Individual(genotype)
 
+        self.conf.experiment_management.export_genotype(individual)
+        # self.conf.experiment_management.export_phenotype(individual)
+        # self.conf.experiment_management.export_phenotype_images(os.path.join('data_fullevolution', 'phenotype_images'),
+        #                                                         individual)
+
         return individual
 
     def init_pop(self, recovered_individuals=[]):
@@ -163,8 +168,8 @@ class Population:
             logger.info(f'Individual {individual.id} has a fitness of {individual.fitness}')
             #TODO: Implement exporting
 
-            # if type_simulation == 'evolve':
-            #     self.conf.experiment_management.export_fitness(individual)
+            if type_simulation == 'evolve':
+                self.conf.experiment_management.export_fitness(individual)
 
     def evaluate_single_robot(self, individual):
         """

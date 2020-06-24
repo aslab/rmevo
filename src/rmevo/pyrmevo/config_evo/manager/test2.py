@@ -27,7 +27,7 @@ from pyrmevo.evolution import fitness
 from pyrmevo.evolution.selection import multiple_selection, tournament_selection
 #
 from pyrmevo.evolution.pop_management.steady_state import steady_state_population_management
-# from pyrmevo.experiment_management import ExperimentManagement
+from pyrmevo.experiment_management import ExperimentManagement
 # from pyrmevo.util.supervisor.analyzer_queue import AnalyzerQueue
 # from pyrmevo.util.supervisor.simulator_queue import SimulatorQueue
 #
@@ -74,10 +74,10 @@ async def run():
 
     # Parse command line / file input arguments
     settings = parser.parse_args()
-    settings.recovery_enabled = False
+    settings.experiment_name = "Test2"
     settings.evaluation_time = 1
 
-    # experiment_management = ExperimentManagement(settings)
+    experiment_management = ExperimentManagement(settings)
     # do_recovery = settings.recovery_enabled and not experiment_management.experiment_is_new()
 
     # logger.info('Activated run '+settings.run+' of experiment '+settings.experiment_name)
@@ -109,8 +109,8 @@ async def run():
         population_management_selector=tournament_selection,
         evaluation_time=settings.evaluation_time,
         offspring_size=offspring_size,
-        experiment_name="Test2",
-        experiment_management=None,
+        experiment_name=settings.experiment_name,
+        experiment_management=experiment_management,
     )
 
     settings.output_directory = 'file'
@@ -120,6 +120,7 @@ async def run():
     population = Population(population_conf, next_robot_id)
 
     # starting a new experiment
+    experiment_management.create_exp_folders()
     population.init_pop()
 
     while gen_num < num_generations-1:

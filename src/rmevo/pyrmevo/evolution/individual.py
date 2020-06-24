@@ -21,7 +21,7 @@ class Individual:
         return _id
 
     def export_genotype(self, folder):
-        self.genotype.export_genotype(f'{folder}/genotypes/genotype_{self.phenotype.id}.txt')
+        self.genotype.save_file(f'{folder}/genotypes/genotype_{self.id}.txt')
 
     def export_fitness(self, folder):
         """
