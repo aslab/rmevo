@@ -43,6 +43,7 @@ namespace gazebo
         }
 
         this->world = _world;
+        (void) _sdf;
 
         ROS_INFO("Launching world controller plugin.");
 
@@ -84,7 +85,7 @@ namespace gazebo
     }
 
     bool evaluateFitness(rmevo_gazebo::FitnessEvaluation::Request &req, rmevo_gazebo::FitnessEvaluation::Response &res){
-        ROS_INFO_NAMED("WorldControl", "Evaluating fitness of current robot...");
+        ROS_INFO_NAMED("WorldControl", "Evaluating fitness of robot: %s", req.robot_id.c_str());
         // Currently a simple evaluation
         gazebo::physics::ModelPtr model = world->ModelByName(req.robot_id);
 
@@ -96,14 +97,23 @@ namespace gazebo
             return true;
         }
 
-        res.robot_fitness = model->GetChildCount();
+        res.robot_fitness = count_entity_children(model);
         ROS_INFO_NAMED("WorldControl", "A total of %f children were found.", res.robot_fitness);
-        for (int i = 0; i < res.robot_fitness; i++){
-            gazebo::physics::BasePtr child = model->GetChild(i);
-            ROS_INFO_NAMED("WorldControl", "Child named %s was found.", child->GetName().c_str());
-        }
+//        for (int i = 0; i < res.robot_fitness; i++){
+//            gazebo::physics::BasePtr child = model->GetChild(i);
+//            ROS_INFO_NAMED("WorldControl", "Child named %s was found.", child->GetName().c_str());
+//        }
         res.success = true;
         return true;
+    }
+
+    int count_entity_children(gazebo::physics::BasePtr entity){
+        int all_children = 0;
+        for (unsigned i = 0; i < entity->GetChildCount(); i++){
+            all_children += 1;
+            all_children += count_entity_children(entity->GetChild(i));
+        }
+        return all_children;
     }
   };
 
