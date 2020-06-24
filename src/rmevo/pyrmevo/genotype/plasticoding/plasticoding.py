@@ -679,7 +679,7 @@ class PlasticodingConfig:
                  e_max_groups=3,
                  axiom_w=None,
                  i_iterations=3,
-                 max_structural_modules=100,
+                 max_depth=10,
                  robot_id=0,
                  factory=None,
                  empty_child_prob=0.5
@@ -688,7 +688,7 @@ class PlasticodingConfig:
         self.e_max_groups = e_max_groups
         self.axiom_w = axiom_w
         self.i_iterations = i_iterations
-        self.max_structural_modules = max_structural_modules
+        self.max_depth = max_depth
         self.robot_id = robot_id
         self.factory = factory
         self.empty_child_prob = empty_child_prob

@@ -4,12 +4,15 @@ import copy
 from pyrmevo.rmevo_bot.rmevo_bot import RMEvoBot
 
 
-def generate_random_children(conf):
-    if random.random() > conf.empty_child_prob:
+def generate_random_children(conf, depth):
+    if depth is 0:
+        return None
+
+    elif random.random() > conf.empty_child_prob:
         new_module = copy.deepcopy(conf.factory.modules_list[random.randint(0, len(conf.factory.modules_list)-1)])
 
-        for i in [0, len(new_module.children) - 1]:
-            new_module.children[i] = generate_random_children(conf)
+        for i in range(len(new_module.children)):
+            new_module.children[i] = generate_random_children(conf, depth-1)
 
         return new_module
 
@@ -22,8 +25,9 @@ def generate_random_body(conf):
     module_template = conf.factory.modules_list[random.randint(0, modules_number-1)]
     new_body = copy.deepcopy(module_template)
 
-    for i in enumerate(new_body.children):
-        new_body.children[i] = generate_random_children(conf)
+    max_depth = conf.max_depth
+    for i, children in enumerate(new_body.children):
+        new_body.children[i] = generate_random_children(conf, max_depth)
 
     return new_body
 
