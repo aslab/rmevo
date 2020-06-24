@@ -170,12 +170,9 @@ def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chai
         if child_module is None:
             continue
 
-        if type(module) is FactoryModule:
-            child_slot_chain = '{}{}'.format(slot_chain, my_slot)
-            my_slot = module.SLOT_DATA[my_slot]
-        else:
-            my_slot = module.boxslot(Orientation(my_slot))
-            child_slot_chain = '{}{}'.format(slot_chain, my_slot.orientation.short_repr())
+
+        child_slot_chain = '{}{}'.format(slot_chain, my_slot)
+        my_slot = module.SLOT_DATA[my_slot]
 
         children_links, \
         children_joints, \

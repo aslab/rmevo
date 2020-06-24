@@ -35,7 +35,14 @@ class FactoryManager:
         for module in modules_string:
             if module is not '':
                 new_module = RMEvoModule()
-                new_module.TYPE = module
+                module = module.replace('[', '')
+                module = module.replace(']', '')
+                module_type, module_slots = module.split(', ')
+
+                new_module.TYPE = module_type
+                for _i in range(int(module_slots)):
+                    new_module.children.append([])
+
                 self.modules_list.append(new_module)
 
     def send_robot_to_factory(self, name, robot):

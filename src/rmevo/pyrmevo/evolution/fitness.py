@@ -25,6 +25,7 @@ class FitnessManager:
         self.factory_manager.send_robot_to_factory(individual.id, robot_yaml)
         rospy.sleep(2)
         fitness = self.gazebo_manager.evaluate_robot_fitness(individual.id)
+        rospy.sleep(1)
         self.gazebo_manager.delete_robot(individual.id)
         return fitness
 

@@ -39,9 +39,11 @@ class FactoryNode:
         modules_string = ""
 
         logger.info("Available modules are: ")
-        for item in modules_list:
-            logger.info("\t" + item.TYPE)
-            modules_string = modules_string + item.TYPE + "\n"
+        for module in modules_list:
+            next_module = "[" + module.TYPE + ", " + str(len(module.children)) + "]"
+            logger.info("\t" + next_module)
+
+            modules_string = modules_string + next_module + "\n"
         return modules_string
 
     def set_pose(self, position=[0, 0, 0], orientation=[0, 0, 0]):
