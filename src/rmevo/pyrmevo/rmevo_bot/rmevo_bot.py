@@ -145,3 +145,6 @@ class RMEvoBot:
 
         with open(path, 'w') as robot_file:
             robot_file.write(robot)
+
+    def regenerate_body_id(self):
+        self._body.regenerate_id("")

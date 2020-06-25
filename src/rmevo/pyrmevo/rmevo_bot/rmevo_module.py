@@ -129,3 +129,9 @@ class RMEvoModule:
                     yaml_object=yaml_object['children'][parent_slot], factory=factory)
 
         return new_module
+
+    def regenerate_id(self, chain_string):
+        self.id = self.TYPE + chain_string
+        for i, child in enumerate(self.children):
+            if child is not None:
+                child.regenerate_id(chain_string + "_" + str(i))

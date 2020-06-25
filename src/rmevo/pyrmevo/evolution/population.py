@@ -84,6 +84,7 @@ class Population:
 
     def _new_individual(self, genotype):
         individual = Individual(genotype)
+        individual.genotype.regenerate_body_id()
 
         self.conf.experiment_management.export_genotype(individual)
         # self.conf.experiment_management.export_phenotype(individual)
