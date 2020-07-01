@@ -70,3 +70,10 @@ parser.add_argument(
     type=str,
     help="Determine the folder where the modules are"
 )
+
+parser.add_argument(
+    '--output_folder',
+    default=None,
+    type=str,
+    help="Determine the folder where the factory is going to write output files"
+)

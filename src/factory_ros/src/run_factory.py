@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+import os
+import shutil
+
 import rospy
 from std_srvs.srv import Empty
 
@@ -13,15 +16,22 @@ from factory_ros.srv import ImportModules, OutputString, RobotConfiguration
 
 class FactoryNode:
     def __init__(self, arguments):
+        self.arguments = arguments
         if arguments.modules is None:
             logger.error("Must provide --modules argument with folder to modules")
             return
+
+        if arguments.output_folder is not None:
+            if os.path.exists(arguments.output_folder):
+                shutil.rmtree(arguments.output_folder)
+            os.makedirs(arguments.output_folder)
+            os.mkdir(os.path.join(arguments.output_folder, 'sdf'))
 
         # Init node
         rospy.init_node('factory')
 
         # Runs factory in node
-        self.factory = Factory()
+        self.factory = Factory(settings=arguments)
         self.factory.import_modules_from_dir(arguments.modules)
 
         # Start services
@@ -68,6 +78,10 @@ class FactoryNode:
         initial_pose = self.set_pose([0.0, 0.0, 0.0], [0.0, 0.0, 0.0])
         reference_frame = ""
         model_xml = self.factory.generate_sdf(model_name, yaml_string)
+
+        if self.arguments.output_folder is not None:
+            with open(f'{self.arguments.output_folder}/sdf/{model_name}.sdf', 'w') as robot_file:
+                robot_file.write(model_xml)
 
         spawn_model_gazebo = rospy.ServiceProxy('/gazebo/spawn_sdf_model', SpawnModel)
         spawn_model_gazebo(model_name, model_xml, robot_namespace, initial_pose, reference_frame)
