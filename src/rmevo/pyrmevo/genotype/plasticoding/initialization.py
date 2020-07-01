@@ -21,9 +21,15 @@ def generate_random_children(conf, depth):
 
 
 def generate_random_body(conf):
-    modules_number = len(conf.factory.modules_list)
-    module_template = conf.factory.modules_list[random.randint(0, modules_number-1)]
-    new_body = copy.deepcopy(module_template)
+    module_template = None
+    for module in conf.factory.modules_list:
+        if module.TYPE == "Core":
+            module_template = module
+
+    if module_template is not None:
+        new_body = copy.deepcopy(module_template)
+    else:
+        raise RuntimeError("Module type Core not found")
 
     max_depth = conf.max_depth
     for i, children in enumerate(new_body.children):
