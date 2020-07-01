@@ -51,7 +51,7 @@ async def run():
     offspring_size = 5
 
     genotype_conf = PlasticodingConfig(
-        max_depth=5,
+        max_depth=2,
         factory=factory_manager,
         axiom_w='Core',
         empty_child_prob=0.5

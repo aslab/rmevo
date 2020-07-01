@@ -66,6 +66,7 @@ class RMEvoModule:
         self.children = [None, None, None, None]
         self.info = None
         self.robot = None
+        self.is_joint = False
 
     def color(self):
         return self.rgb if self.rgb is not None else self.DEFAULT_COLOR

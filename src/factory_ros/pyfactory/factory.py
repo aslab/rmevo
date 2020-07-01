@@ -93,6 +93,16 @@ class Factory:
         else:
             raise RuntimeError('Visual tag not found in link')
 
+    def parse_joint(self, module, joint_tree):
+        module.SDF = joint_tree
+        module.is_joint = True
+
+        if joint_tree.find('axis') is not None:
+            module.axis = self.parse_sdf_text(joint_tree.find('axis').find('xyz'))
+        else:
+            raise RuntimeError('Visual tag not found in link')
+
+
     def parse_rmevo(self, module, rmevo_tree):
         from pyfactory.rmevo_module import BoxSlot, Orientation
 
@@ -107,6 +117,8 @@ class Factory:
                 new_slot.tangent = SDF.math.Vector3(self.parse_sdf_text(child.find('tan')))
                 module.SLOT_DATA.append(new_slot)
                 module.children.append(None)
+            # One slot is used for the parent
+            module.children.pop()
         else:
             assert AttributeError("Tag free_slots not found in module %s, using default", module.TYPE)
 
@@ -116,6 +128,8 @@ class Factory:
         for child in model_tree:
             if child.tag == 'link':
                 self.parse_link(module, child)
+            elif child.tag == 'joint':
+                self.parse_joint(module, child)
             elif child.tag == 'rmevo':
                 self.parse_rmevo(module, child)
             else:

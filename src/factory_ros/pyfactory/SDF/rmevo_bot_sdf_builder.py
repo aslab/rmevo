@@ -146,67 +146,22 @@ def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chai
     my_link = parent_link
     my_collision = None
 
-    visual, collision, sensor = module.to_sdf(slot_chain, my_link)
+    if module.is_joint is True:
+        if module.has_children() is False:
+            return links, joints, sensors, collisions
 
-    module_slot = module.SLOT_DATA[0]
+        child_module = module.children[0]
+        child_link = SDF.Link('{}_{}'.format(slot_chain, module.TYPE), self_collide=self_collide)
 
-    _sdf_attach_module(module_slot, module.orientation,
-                       visual, collision,
-                       parent_slot, parent_collision)
+        child_visual, child_collision, imu_core_sensor = child_module.to_sdf('', child_link)
 
-    visual.set('name', 'Visual_{}'.format(module.id))
-    collision.set('name', 'Collisions_{}'.format(module.id))
-    parent_link.append(visual)
-    parent_link.append(collision)
-    collisions.append(collision)
+        child_slot = child_module.SLOT_DATA[0]
 
-    my_collision = collision
+        _sdf_attach_module(child_slot, child_module.orientation,
+                           child_visual, child_collision,
+                           parent_slot, parent_collision)
 
-    if sensor is not None:
-        sensors.append(sensor)
-
-    # RECURSION ON CHILDREN
-    for my_slot, child_module in module.iter_children():
-        if child_module is None:
-            continue
-
-
-        child_slot_chain = '{}{}'.format(slot_chain, my_slot)
-        my_slot = module.SLOT_DATA[my_slot]
-
-        children_links, \
-        children_joints, \
-        children_sensors, \
-        children_collisions = _module_to_sdf(child_module,
-                                             my_link,
-                                             my_slot,
-                                             my_collision,
-                                             child_slot_chain, self_collide)
-        links.extend(children_links)
-        joints.extend(children_joints)
-        sensors.extend(children_sensors)
-        collisions.extend(children_collisions)
-
-    return links, joints, sensors, collisions
-
-    #     child_link = SDF.Link('{}_{}'.format(slot_chain, module.TYPE), self_collide=self_collide)
-    #
-    #     child_visual, child_collision, imu_core_sensor = module.to_sdf('', child_link)
-    #
-    #     module_slot = module.boxslot(Orientation.SOUTH)
-    #     _sdf_attach_module(module_slot, module.orientation,
-    #                        child_visual, child_collision,
-    #                        parent_slot, parent_collision)
-
-        # for joint in joints:
-        #     model.append(joint)
-        #     if joint.is_motorized():
-        #         actuators.append(joint)
-        #
-        # for link in links:
-        #     link.align_center_of_mass()
-        #     # link.calculate_inertial()
-        #     model.append(link)
+        joint = SDF.Joint(module.id, module.TYPE, parent_link, child_link, module.axis)
 
         # parent_slot = module.boxslot_frame(Orientation.NORTH)
         # module_slot = module.boxslot_servo(Orientation.SOUTH)
@@ -240,23 +195,43 @@ def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chai
         #         collision_servo.set_position(collisions_servo[0].get_position())
         #         collision_servo.set_rotation(collisions_servo[0].get_rotation())
         #         collision_servo.translate(collision_servo.to_parent_direction(old_pos))
-        #
-        # # Add joint
-        # child_link.add_joint(joint)
-        # links.append(child_link)
-        # joints.append(joint)
-        #
-        # # update my_link and my_collision
-        # my_link = child_link
-        # my_collision = collisions_servo[0]
+
+        # Add joint
+        child_link.add_joint(joint)
+        links.append(child_link)
+        joints.append(joint)
+
+        # update my_link and my_collision
+        my_link = child_link
+        my_collision = child_collision
+
+    else:
+        visual, collision, sensor = module.to_sdf(slot_chain, my_link)
+
+        module_slot = module.SLOT_DATA[0]
+
+        _sdf_attach_module(module_slot, module.orientation,
+                           visual, collision,
+                           parent_slot, parent_collision)
+
+        visual.set('name', 'Visual_{}'.format(module.id))
+        collision.set('name', 'Collisions_{}'.format(module.id))
+        parent_link.append(visual)
+        parent_link.append(collision)
+        collisions.append(collision)
+
+        my_collision = collision
+
+        if sensor is not None:
+            sensors.append(sensor)
 
     # RECURSION ON CHILDREN
     for my_slot, child_module in module.iter_children():
         if child_module is None:
             continue
 
-        my_slot = module.boxslot(Orientation(my_slot))
-        child_slot_chain = '{}{}'.format(slot_chain, my_slot.orientation.short_repr())
+        child_slot_chain = '{}{}'.format(slot_chain, my_slot)
+        my_slot = module.SLOT_DATA[my_slot]
 
         children_links, \
         children_joints, \
@@ -272,7 +247,6 @@ def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chai
         collisions.extend(children_collisions)
 
     return links, joints, sensors, collisions
-
 
 def _sdf_brain_plugin_conf(
         robot_brain,
