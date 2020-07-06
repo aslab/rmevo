@@ -31,7 +31,7 @@ class FactoryNode:
         rospy.init_node('factory')
 
         # Runs factory in node
-        self.factory = Factory(settings=arguments)
+        self.factory = Factory()
         self.factory.import_modules_from_dir(arguments.modules)
 
         # Start services
