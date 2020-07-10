@@ -78,3 +78,7 @@ target/
 .python-version
 Pipfile
 Pipfile.lock
+
+# Some outuput folders
+rmevo_manager/
+output/

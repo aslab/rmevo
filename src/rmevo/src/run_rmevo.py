@@ -17,9 +17,8 @@ class RMEvoCore:
             # this split will give errors on windows
             manager_lib = os.path.splitext(arguments.manager)[0]
             manager_lib = '.'.join(manager_lib.split('/'))
-            print(manager_lib)
             # manager = importlib.import_module(manager_lib,'pyrmevo.tutorials').run
-            self.manager = importlib.import_module('.config_evo.' + manager_lib, package='pyrmevo').run
+            self.manager = importlib.import_module(manager_lib, package='rmevo').run
 
         else:
             raise ValueError("RMEvo needs manager argument")
