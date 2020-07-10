@@ -47,7 +47,7 @@ async def run():
 
     # experiment params #
     num_generations = 5
-    population_size = 10
+    population_size = 5
     offspring_size = 5
 
     genotype_conf = PlasticodingConfig(
@@ -100,8 +100,8 @@ async def run():
         fitness_conf=fitness_conf,
         mutation_operator=null_mutation,
         mutation_conf=mutation_conf,
-        #crossover_operator=rmevo_crossovers.standard_crossover,
-        crossover_operator=None,
+        crossover_operator=rmevo_crossovers.standard_crossover,
+        # crossover_operator=None,
         crossover_conf=crossover_conf,
         selection=lambda individuals: tournament_selection(individuals, 2),
         parent_selection=lambda individuals: multiple_selection(individuals, 2, tournament_selection),

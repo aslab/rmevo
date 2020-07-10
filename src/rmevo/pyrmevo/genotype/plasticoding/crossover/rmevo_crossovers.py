@@ -1,29 +1,39 @@
 from pyrmevo.genotype.plasticoding.plasticoding import Plasticoding
 from pyrmevo.evolution.individual import Individual
-import random
+from pyrmevo.custom_logging.logger import logger
 
+import random
+import copy
 
 def generate_child_genotype(parent_genotypes, genotype_conf, crossover_conf):
     """
-    Generates a child (individual) by randomly mixing production rules from two parents
+    Generates a child (individual) by randomly swaping two branches of the parents
 
     :param parents: parents to be used for crossover
 
     :return: child genotype
     """
-    grammar = {}
+    childs = []
+    swaping_nodes = []
     crossover_attempt = random.uniform(0.0, 1.0)
     if crossover_attempt > crossover_conf.crossover_prob:
-        grammar = parent_genotypes[0].grammar
+        childs.append(copy.deepcopy(parent_genotypes[0]))
+        childs.append(copy.deepcopy(parent_genotypes[1]))
     else:
-        for element in Alphabet.modules(genotype_conf.factory):
-            parent = random.randint(0, 1)
-            # gets the production rule for the respective letter
-            grammar[element[0]] = parent_genotypes[parent].grammar[element[0]]
+        childs.append(copy.deepcopy(parent_genotypes[0]))
+        childs.append(copy.deepcopy(parent_genotypes[1]))
+        # Node 0 is not included
+        selected_node = random.randint(1, childs[0].size())
+        swaping_nodes.append(childs[0].get_robot_module(selected_node))
 
-    genotype = Plasticoding(genotype_conf, 'tmp')
-    genotype.grammar = grammar
-    return genotype.clone()
+        selected_node = random.randint(1, childs[1].size())
+        swaping_nodes.append(childs[1].get_robot_module(selected_node))
+
+        aux = swaping_nodes[0]
+        swaping_nodes[0] = swaping_nodes[1]
+        swaping_nodes[1] = aux
+
+    return childs[0]
 
 
 def standard_crossover(parent_individuals, genotype_conf, crossover_conf):
@@ -35,7 +45,6 @@ def standard_crossover(parent_individuals, genotype_conf, crossover_conf):
     """
     parent_genotypes = [p.genotype for p in parent_individuals]
     new_genotype = generate_child_genotype(parent_genotypes, genotype_conf, crossover_conf)
-    #TODO what if you have more than 2 parents? fix log
-    genotype_logger.info(
+    logger.info(
         f'crossover: for genome {new_genotype.id} - p1: {parent_genotypes[0].id} p2: {parent_genotypes[1].id}.')
     return new_genotype

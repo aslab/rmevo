@@ -50,6 +50,32 @@ class RMEvoBot:
 
         return count
 
+    def _get_module(self, module, selected):
+        """
+        Returns the module with the number given in selected by a depth first count.
+
+        There is probably another method more efficient
+        """
+        if selected == 0:
+            return module
+        else:
+            cumulative_size = 0
+            for _, child in module.iter_children():
+                if child is not None:
+                    next_size = self._recursive_size_measurement(child) + 1
+                    if selected <= cumulative_size + next_size:
+                        selected = selected - cumulative_size - 1
+                        return self._get_module(child, selected)
+                    else:
+                        cumulative_size = cumulative_size + next_size
+
+    def get_robot_module(self, selected):
+        """
+        Masks the _get_module function
+        """
+        return self._get_module(self._body, selected)
+
+
     def measure_behaviour(self):
         """
 
