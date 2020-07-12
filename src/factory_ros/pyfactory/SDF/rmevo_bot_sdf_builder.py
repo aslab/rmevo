@@ -18,6 +18,7 @@ def rmevo_bot_to_sdf(robot, robot_pose, nice_format, self_collide=True):
     })
 
     pose_elem = SDF.Pose(robot_pose)
+
     model.append(pose_elem)
 
     core_link = SDF.Link('Core', self_collide=self_collide)
@@ -151,17 +152,31 @@ def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chai
             return links, joints, sensors, collisions
 
         child_module = module.children[0]
-        child_link = SDF.Link('{}_{}'.format(slot_chain, module.TYPE), self_collide=self_collide)
+        child_link = SDF.Link('{}_{}'.format(child_module.TYPE, module.TYPE), self_collide=self_collide)
 
         child_visual, child_collision, imu_core_sensor = child_module.to_sdf('', child_link)
 
+
+        joint = SDF.Joint(module.id, module.TYPE, parent_link, child_link, module.axis)
+
+        joint_parent_slot = module.SLOT_DATA[0]
+        joint_child_slot = module.SLOT_DATA[1]
         child_slot = child_module.SLOT_DATA[0]
 
+        joint.align(joint_parent_slot, parent_slot, parent_collision)
         _sdf_attach_module(child_slot, child_module.orientation,
                            child_visual, child_collision,
                            parent_slot, parent_collision)
 
-        joint = SDF.Joint(module.id, module.TYPE, parent_link, child_link, module.axis)
+        # To use when joints have visual sdf data
+        # _sdf_attach_module(joint_parent_slot, module.orientation,
+        #                    None, None,
+        #                    parent_slot, parent_collision)
+        #
+        # _sdf_attach_module(child_slot, child_module.orientation,
+        #                    child_visual, child_collision,
+        #                    joint_child_slot, None)
+
 
         # parent_slot = module.boxslot_frame(Orientation.NORTH)
         # module_slot = module.boxslot_servo(Orientation.SOUTH)

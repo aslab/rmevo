@@ -243,12 +243,13 @@ class FactoryModule(RMEvoModule):
         from pyfactory.SDF.geometry import Material
 
         visual = self.SDF_VISUAL
-        material = Material(
-            ambient=(self.rgb[0], self.rgb[1], self.rgb[2], 1.0),
-            diffuse=(self.rgb[0], self.rgb[1], self.rgb[2], 1.0),
-            specular=(0.1, 0.1, 0.1, 1.0),
-        )
-        visual.append(material)
+        if visual is not None:
+            material = Material(
+                ambient=(self.rgb[0], self.rgb[1], self.rgb[2], 1.0),
+                diffuse=(self.rgb[0], self.rgb[1], self.rgb[2], 1.0),
+                specular=(0.1, 0.1, 0.1, 1.0),
+            )
+            visual.append(material)
 
         collision = self.SDF_COLLISION
 
