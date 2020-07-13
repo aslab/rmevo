@@ -128,3 +128,7 @@ async def run():
         population = population.next_gen(gen_num)
 
     # output result after completing all generations...
+    fittest_robot = population.get_fittest_robot()
+    logger.info("Evolution finished")
+    logger.info("Fittest robot is " + fittest_robot.id + " with a fitness of " + str(fittest_robot.fitness))
+    logger.info("Process finished")

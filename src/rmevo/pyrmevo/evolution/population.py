@@ -179,3 +179,11 @@ class Population:
         """
 
         return self.conf.fitness_manager.evaluate_fitness(individual)
+
+    def get_fittest_robot(self):
+        fittest_robot = self.individuals[0]
+        for current_robot in self.individuals:
+            if current_robot.fitness > fittest_robot.fitness:
+                fittest_robot = current_robot
+
+        return fittest_robot
