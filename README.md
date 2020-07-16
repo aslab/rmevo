@@ -64,27 +64,6 @@ A module composed of one body and two legs is shown behind:
 </p>
 ### User Guide
 
-#### Installation
-
-Clone and build the repo:
-
-```
-# Create new folder and clone the repo
-mkdir EvoRM
-cd EvoRM
-git clone https://github.com/aslab/rmevo.git
-cd rmevo
-
-# Build the code and source it. ROS have to be sourced first for catkin to work
-catkin_make
-```
-
-Source the workspace in every terminal where the packages are going to be used:
-```
-cd EvoRM/rmevo
-source devel/setup.bash
-```
-
 #### Launch centipede basic module
 
 To launch a empty world with the centipede basic module:
