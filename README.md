@@ -62,35 +62,6 @@ A module composed of one body and two legs is shown behind:
 <p align="center">
   <img src="https://github.com/aslab/rmevo/blob/master/images/centipede_module.png" width="600">
 </p>
-### User Guide
+### Wiki
 
-#### Launch centipede basic module
-
-To launch a empty world with the centipede basic module:
-
-```
-# Launch the world with the basic model
-roslaunch centipede_gazebo empty_world.launch
-```
-
-#### Launch evolution using Gazebo
-
-To use RMEvo with Gazebo:
-
-- Launch the rmevo_world in a new terminal:
-```
-roslaunch rmevo_gazebo empty_world.launch
-```
-
-- Start the factory in a new terminal passing the modules folder as an argument. In the folder *src/rmevo/test/modules/basic/* there are a few examples used in the tests:
-```
-rosrun factory_ros run_factory.py --modules src/rmevo/test/modules/basic/
-```
-
-- Run the rmevo core. It needs a *-manager* argument, which is the python script with the evolution program. There is an example in *rmevo_manager/test2.py*
-
-```
-rosrun rmevo run_rmevo.py -manager rmevo_manager/test2.py
-```
-
-The evolution process will start, using the factory node to spawn the models in Gazebo.
+If you want to know more, you can find the wiki [here](https://github.com/aslab/rmevo/wiki). It contains a general overview and some tutorials that will help you get through.
