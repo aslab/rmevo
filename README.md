@@ -62,6 +62,7 @@ A module composed of one body and two legs is shown behind:
 <p align="center">
   <img src="https://github.com/aslab/rmevo/blob/master/images/centipede_module.png" width="600">
 </p>
+
 ### Wiki
 
 If you want to know more, you can find the wiki [here](https://github.com/aslab/rmevo/wiki). It contains a general overview and some tutorials that will help you get through.
