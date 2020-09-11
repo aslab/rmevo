@@ -47,7 +47,7 @@ async def run():
 
     # experiment params #
     num_generations = 5
-    population_size = 5
+    population_size = 10
     offspring_size = 5
 
     genotype_conf = PlasticodingConfig(

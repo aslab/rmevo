@@ -100,7 +100,7 @@ class Factory:
         if joint_tree.find('axis') is not None:
             module.axis = self.parse_sdf_text(joint_tree.find('axis').find('xyz'))
         else:
-            raise RuntimeError('Visual tag not found in link')
+            raise RuntimeError('Axis tag not found in joint')
 
 
     def parse_rmevo(self, module, rmevo_tree):

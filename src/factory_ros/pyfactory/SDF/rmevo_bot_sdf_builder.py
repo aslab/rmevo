@@ -211,6 +211,10 @@ def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chai
         #         collision_servo.set_rotation(collisions_servo[0].get_rotation())
         #         collision_servo.translate(collision_servo.to_parent_direction(old_pos))
 
+        # Add new_parent visuals
+        child_link.append(child_visual)
+        child_link.append(child_collision)
+
         # Add joint
         child_link.add_joint(joint)
         links.append(child_link)
@@ -218,6 +222,7 @@ def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chai
 
         # update my_link and my_collision
         my_link = child_link
+        module = child_module
         my_collision = child_collision
 
     else:
