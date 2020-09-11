@@ -63,42 +63,6 @@ A module composed of one body and two legs is shown behind:
   <img src="https://github.com/aslab/rmevo/blob/master/images/centipede_module.png" width="600">
 </p>
 
-### User Guide
-Clone and build the repo:
+### Wiki
 
-```
-# Create new folder and clone the repo
-mkdir EvoRM
-cd EvoRM
-git clone https://github.com/aslab/rmevo.git
-
-# Build the code and source it
-catkin_make
-```
-
-Source the workspace in every terminal where the packages are going to be used:
-```
-cd EvoRM
-source devel/setup.bash
-```
-
-To launch a empty world with the centipede basic module:
-```
-# Launch the world with the basic model
-roslaunch centipede_gazebo empty_world.launch
-```
-
-To use RMEvo with Gazebo:
-- Launch the rmevo_world in a new terminal:
-```
-roslaunch rmevo_gazebo empty_world.launch
-```
-
-- Start the factory in a new terminal passing the modules folder as an argument:
-```
-rosrun factory_ros run_factory.py --modules src/rmevo/test/modules/basic/
-``` 
-
-- Run the rmevo core
-
-
+If you want to know more, you can find the wiki [here](https://github.com/aslab/rmevo/wiki). It contains a general overview and some tutorials that will help you get through.
