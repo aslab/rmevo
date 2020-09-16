@@ -41,7 +41,7 @@ class FactoryManager:
 
                 new_module.TYPE = module_type
                 for _i in range(int(module_slots)):
-                    new_module.children.append([])
+                    new_module.children.append([None])
 
                 self.modules_list.append(new_module)
 
