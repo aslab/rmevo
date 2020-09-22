@@ -8,9 +8,10 @@ class Joint(SDF.Posable):
     def __init__(self,
                  _id: str,
                  name: str,
+                 type: str,
                  parent_link: SDF.Link,
                  child_link: SDF.Link,
-                 axis: SDF.math.Vector3,
+                 axis: SDF.math.Vector3 = [0, 0, 0],
                  coordinates=None,
                  motorized=False,
                  position=None,
@@ -21,7 +22,7 @@ class Joint(SDF.Posable):
             {
                 # 'id': _id,
                 'name': name,
-                'type': 'revolute'
+                'type': type
             },
             position=position,
             rotation=rotation,
