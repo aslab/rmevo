@@ -37,8 +37,8 @@ def rmevo_bot_to_sdf(robot, robot_pose, nice_format, self_collide=True):
         if child_module is None:
             continue
         if type(robot.body) == FactoryModule:
+            slot_chain = '{}{}'.format(robot.body.TYPE, core_slot)
             core_slot = robot.body.SLOT_DATA[core_slot]
-            slot_chain = robot.body.TYPE
         else:
             core_slot = robot._body.boxslot(Orientation(core_slot))
             slot_chain = core_slot.orientation.short_repr()
@@ -156,7 +156,6 @@ def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chai
 
         child_visual, child_collision, imu_core_sensor = child_module.to_sdf('', child_link)
 
-
         joint = SDF.Joint(module.id, module.TYPE, parent_link, child_link, module.axis)
 
         joint_parent_slot = module.SLOT_DATA[0]
@@ -226,21 +225,33 @@ def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chai
         my_collision = child_collision
 
     else:
+        module_link = SDF.Link('{}_{}'.format(slot_chain, module.TYPE), self_collide=self_collide)
+
         visual, collision, sensor = module.to_sdf(slot_chain, my_link)
 
         module_slot = module.SLOT_DATA[0]
+
+        joint = SDF.Joint(module.id, '{}_{}_{}'.format(slot_chain, module.TYPE, "joint"), "fixed", parent_link, module_link)
+
+        joint.set_position(module_slot.pos)
 
         _sdf_attach_module(module_slot, module.orientation,
                            visual, collision,
                            parent_slot, parent_collision)
 
-        visual.set('name', 'Visual_{}'.format(module.id))
-        collision.set('name', 'Collisions_{}'.format(module.id))
-        parent_link.append(visual)
-        parent_link.append(collision)
-        collisions.append(collision)
+        # Configure module link
+        module_link.append(visual)
+        module_link.append(collision)
+        links.append(module_link)
 
+        joints.append(joint)
+        module_link.add_joint(joint)
+
+        # update my_link and my_collision
+        my_link = module_link
         my_collision = collision
+
+        collisions.append(collision)
 
         if sensor is not None:
             sensors.append(sensor)
@@ -250,7 +261,7 @@ def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chai
         if child_module is None:
             continue
 
-        child_slot_chain = '{}{}'.format(slot_chain, my_slot)
+        child_slot_chain = '{}_{}{}'.format(slot_chain, module.TYPE, my_slot)
         my_slot = module.SLOT_DATA[my_slot]
 
         children_links, \
