@@ -43,7 +43,7 @@
         </slot>
         <slot name="1">
           <pos>0 0 -0.05</pos>
-          <norm>0 0 1</norm>
+          <norm>0 0 -1</norm>
           <tan>1 0 0</tan>
         </slot>
       </slots>
