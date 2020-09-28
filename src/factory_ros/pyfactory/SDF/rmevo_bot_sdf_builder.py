@@ -262,7 +262,7 @@ def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chai
             continue
 
         child_slot_chain = '{}_{}{}'.format(slot_chain, module.TYPE, my_slot)
-        my_slot = module.SLOT_DATA[my_slot]
+        my_slot = module.SLOT_DATA[my_slot+1]
 
         children_links, \
         children_joints, \
