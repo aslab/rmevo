@@ -152,6 +152,11 @@ def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chai
             return links, joints, sensors, collisions
 
         child_module = module.children[0]
+        if child_module.is_joint:
+            if child_module.has_children() is False:
+                return links, joints, sensors, collisions
+            child_module = child_module.children[0]
+
         child_link = SDF.Link('{}_{}'.format(child_module.type, module.type), self_collide=self_collide)
 
         child_visual, child_collision, imu_core_sensor = child_module.to_sdf('', child_link)
