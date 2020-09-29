@@ -1,6 +1,6 @@
 ﻿<sdf version='1.6'>
   <model name='joint'>
-  <joint name='hinge_left_1_1' type='revolute'>
+  <joint name='revolute_joint' type='revolute'>
       <child>base_left_1</child>
       <parent>base_link</parent>
       <axis>
