@@ -7,7 +7,7 @@ import time
 from pyrmevo import parser, str_to_address, make_revolve_config
 from pyrmevo.angle import Tree, Crossover, Mutator, WorldManager
 # from pyrmevo.angle.robogen.spec import make_planar
-# from pyrmevo.sdfbuilder import SDF, Model, Pose, Link
+# from pyrmevo.sdfbuilder import sdf, Model, Pose, Link
 from pyrmevo.util import multi_future
 
 from .. import logger

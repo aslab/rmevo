@@ -62,8 +62,8 @@ class Factory:
 
     def parse_inertia(self, module, inertia_tree):
         module.SDF_INERTIA = inertia_tree
-        module.MASS = float(inertia_tree.find('mass').text)
-        module.SDF_COLLISION.mass = module.MASS
+        module.mass = float(inertia_tree.find('mass').text)
+        module.SDF_COLLISION.mass = module.mass
 
     def parse_collision(self, module, collision_tree):
         module.SDF_COLLISION = Collision(collision_tree.get('name'), 0.0)
@@ -71,12 +71,12 @@ class Factory:
 
 
     def parse_visual(self, module, visual_tree):
-        if module.SDF_VISUAL is None:
-            module.SDF_VISUAL = Visual(visual_tree.get('name'))
-            module.SDF_VISUAL.copy_from_tree(visual_tree)
+        if module.sdf_visual is None:
+            module.sdf_visual = Visual(visual_tree.get('name'))
+            module.sdf_visual.copy_from_tree(visual_tree)
 
     def parse_link(self, module, link_tree):
-        module.SDF = link_tree
+        module.sdf = link_tree
 
         if link_tree.find('collision') is not None:
             self.parse_collision(module, link_tree.find('collision'))
@@ -94,7 +94,7 @@ class Factory:
             raise RuntimeError('Visual tag not found in link')
 
     def parse_joint(self, module, joint_tree):
-        module.SDF = joint_tree
+        module.sdf = joint_tree
         module.is_joint = True
 
         if joint_tree.find('axis') is not None:
@@ -102,28 +102,33 @@ class Factory:
         else:
             raise RuntimeError('Axis tag not found in joint')
 
+        if joint_tree.get('type') is not None:
+            module.joint_type = joint_tree.get('type')
+        else:
+            raise RuntimeError('Type not found in joint')
+
 
     def parse_rmevo(self, module, rmevo_tree):
         from pyfactory.rmevo_module import BoxSlot, Orientation
 
         slots_tag = rmevo_tree.find('slots')
         if slots_tag is not None:
-            module.SLOT_DATA = []
+            module.slot_data = []
             module.children = []
             for child in slots_tag:
                 new_slot = BoxSlot([[0, 0], [1, 0], [0, 0]], orientation=Orientation.SOUTH)
                 new_slot.pos = SDF.math.Vector3(self.parse_sdf_text(child.find('pos')))
                 new_slot.normal = SDF.math.Vector3(self.parse_sdf_text(child.find('norm')))
                 new_slot.tangent = SDF.math.Vector3(self.parse_sdf_text(child.find('tan')))
-                module.SLOT_DATA.append(new_slot)
+                module.slot_data.append(new_slot)
                 module.children.append(None)
             # One slot is used for the parent
             module.children.pop()
         else:
-            assert AttributeError("Tag free_slots not found in module %s, using default", module.TYPE)
+            assert AttributeError("Tag free_slots not found in module %s, using default", module.type)
 
     def parse_model(self, module, model_tree):
-        module.TYPE = model_tree.attrib['name']
+        module.type = model_tree.attrib['name']
 
         for child in model_tree:
             if child.tag == 'link':
@@ -137,7 +142,7 @@ class Factory:
 
     def import_module_from_sdf(self, file):
         """
-        Import module from SDF
+        Import module from sdf
         """
 
         new_module = FactoryModule()
@@ -179,7 +184,7 @@ class Factory:
 
     def generate_sdf(self, robot_name, yaml_string):
         robot = RMEvoBot(self_factory=self)
-        logger.info("Generating SDF for robot: " + robot_name)
+        logger.info("Generating sdf for robot: " + robot_name)
         robot.load_yaml(yaml_string)
         return robot.to_sdf()
 
@@ -211,7 +216,7 @@ class Alphabet(Enum):
     def modules(factory):
         modules = []
         for module in factory.modules_list:
-            modules.append([module.TYPE, []])
+            modules.append([module.type, []])
 
         return modules
 

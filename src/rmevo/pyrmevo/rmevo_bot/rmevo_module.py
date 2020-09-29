@@ -25,7 +25,6 @@ class RMEvoModule:
     Base class allowing for constructing RMEvo components in an overviewable manner
     """
     DEFAULT_COLOR = (0.5, 0.5, 0.5)
-    TYPE = None
 
     def __init__(self):
         self.id = None
@@ -35,18 +34,19 @@ class RMEvoModule:
         self.children = []
         self.info = None
         self.robot = None
+        self.type = None
 
     def color(self):
         return self.rgb if self.rgb is not None else self.DEFAULT_COLOR
 
     def to_yaml(self):
-        if self.TYPE is None:
-            raise RuntimeError('Module TYPE is not implemented for "{}",'
+        if self.type is None:
+            raise RuntimeError('Module type is not implemented for "{}",'
                                ' this should be defined.'.format(self.__class__))
 
         yaml_dict_object = OrderedDict()
         yaml_dict_object['id'] = self.id
-        yaml_dict_object['type'] = self.TYPE
+        yaml_dict_object['type'] = self.type
         yaml_dict_object['orientation'] = self.orientation
 
         if self.rgb is not None:
@@ -100,7 +100,7 @@ class RMEvoModule:
         new_module = RMEvoModule()
 
         for module_template in factory.modules_list:
-            if module_template.TYPE == yaml_object['type']:
+            if module_template.type == yaml_object['type']:
                 new_module = copy.deepcopy(module_template)
                 break
 
@@ -131,7 +131,7 @@ class RMEvoModule:
         return new_module
 
     def regenerate_id(self, chain_string):
-        self.id = self.TYPE + chain_string
+        self.id = self.type + chain_string
         for i, child in enumerate(self.children):
             if child is not None:
                 child.regenerate_id(chain_string + "_" + str(i))

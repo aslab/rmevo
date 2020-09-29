@@ -212,7 +212,7 @@ class Plasticoding(Genotype):
             if symbol[self.index_symbol] == self.conf.axiom_w:
                 module = FactoryModule()
                 for module_template in self.conf.factory.modules_list:
-                    if module_template.TYPE == symbol[self.index_symbol]:
+                    if module_template.type == symbol[self.index_symbol]:
                         module = copy.deepcopy(module_template)
                         break
 
@@ -499,7 +499,7 @@ class Plasticoding(Genotype):
             else:
                 module = FactoryModule()
                 for module_template in self.conf.factory.modules_list:
-                    if module_template.TYPE == new_module_type:
+                    if module_template.type == new_module_type:
                         module = copy.deepcopy(module_template)
                         break
 
@@ -510,9 +510,9 @@ class Plasticoding(Genotype):
             module.rgb = self.get_color(new_module_type)
 
             if not module.rgb:
-                if module.SDF_VISUAL.find('material') is not None and \
-                        module.SDF_VISUAL.find('material').find('ambient') is not None:
-                    module.rgb = module.SDF_VISUAL.find('material').find('ambient').text
+                if module.sdf_visual.find('material') is not None and \
+                        module.sdf_visual.find('material').find('ambient') is not None:
+                    module.rgb = module.sdf_visual.find('material').find('ambient').text
                 else:
                     module.rgb = [0, 0, 0]
 

@@ -39,7 +39,7 @@ class FactoryManager:
                 module = module.replace(']', '')
                 module_type, module_slots = module.split(', ')
 
-                new_module.TYPE = module_type
+                new_module.type = module_type
                 for _i in range(int(module_slots)):
                     new_module.children.append([None])
 

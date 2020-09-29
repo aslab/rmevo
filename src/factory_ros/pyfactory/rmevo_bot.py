@@ -118,7 +118,7 @@ class RMEvoBot:
         if 'yaml' == conf_type:
             self.load_yaml(text)
         elif 'sdf' == conf_type:
-            raise NotImplementedError("Loading from SDF not yet implemented")
+            raise NotImplementedError("Loading from sdf not yet implemented")
 
     def load_yaml(self, text):
         """

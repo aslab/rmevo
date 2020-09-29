@@ -37,8 +37,8 @@ def rmevo_bot_to_sdf(robot, robot_pose, nice_format, self_collide=True):
         if child_module is None:
             continue
         if type(robot.body) == FactoryModule:
-            slot_chain = '{}{}'.format(robot.body.TYPE, core_slot)
-            core_slot = robot.body.SLOT_DATA[core_slot]
+            slot_chain = '{}{}'.format(robot.body.type, core_slot)
+            core_slot = robot.body.slot_data[core_slot]
         else:
             core_slot = robot._body.boxslot(Orientation(core_slot))
             slot_chain = core_slot.orientation.short_repr()
@@ -129,11 +129,11 @@ def _sdf_attach_module(module_slot, module_orientation: float,
 
 def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chain, self_collide):
     """
-    Recursive function that takes a module and returns a list of SDF links and joints that
+    Recursive function that takes a module and returns a list of sdf links and joints that
     that module and his children have generated.
     :param module: Module to parse
     :type module: RMEvoModule
-    :param parent_link: SDF `Link` of the parent
+    :param parent_link: sdf `Link` of the parent
     :param parent_slot: Slot of the parent which this module should attach to
     :param parent_collision: Parent collision box, needed for the alignment.
     :param slot_chain: Text that names the joints, it encodes the path that was made to arrive to that element.
@@ -152,15 +152,15 @@ def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chai
             return links, joints, sensors, collisions
 
         child_module = module.children[0]
-        child_link = SDF.Link('{}_{}'.format(child_module.TYPE, module.TYPE), self_collide=self_collide)
+        child_link = SDF.Link('{}_{}'.format(child_module.type, module.type), self_collide=self_collide)
 
         child_visual, child_collision, imu_core_sensor = child_module.to_sdf('', child_link)
 
-        joint = SDF.Joint(module.id, module.TYPE, parent_link, child_link, module.axis)
+        joint = SDF.Joint(module.id, module.type, module.joint_type, parent_link, child_link, module.axis)
 
-        joint_parent_slot = module.SLOT_DATA[0]
-        joint_child_slot = module.SLOT_DATA[1]
-        child_slot = child_module.SLOT_DATA[0]
+        joint_parent_slot = module.slot_data[0]
+        joint_child_slot = module.slot_data[1]
+        child_slot = child_module.slot_data[0]
 
         joint.align(joint_parent_slot, parent_slot, parent_collision)
         _sdf_attach_module(child_slot, child_module.orientation,
@@ -225,13 +225,13 @@ def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chai
         my_collision = child_collision
 
     else:
-        module_link = SDF.Link('{}_{}'.format(slot_chain, module.TYPE), self_collide=self_collide)
+        module_link = SDF.Link('{}_{}'.format(slot_chain, module.type), self_collide=self_collide)
 
         visual, collision, sensor = module.to_sdf(slot_chain, my_link)
 
-        module_slot = module.SLOT_DATA[0]
+        module_slot = module.slot_data[0]
 
-        joint = SDF.Joint(module.id, '{}_{}_{}'.format(slot_chain, module.TYPE, "joint"), "fixed", parent_link, module_link)
+        joint = SDF.Joint(module.id, '{}_{}_{}'.format(slot_chain, module.type, "joint"), "fixed", parent_link, module_link)
 
         joint.set_position(module_slot.pos)
 
@@ -261,8 +261,8 @@ def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chai
         if child_module is None:
             continue
 
-        child_slot_chain = '{}_{}{}'.format(slot_chain, module.TYPE, my_slot)
-        my_slot = module.SLOT_DATA[my_slot+1]
+        child_slot_chain = '{}_{}{}'.format(slot_chain, module.type, my_slot)
+        my_slot = module.slot_data[my_slot + 1]
 
         children_links, \
         children_joints, \
@@ -314,7 +314,7 @@ def _sdf_brain_plugin_conf(
     # battery
     # if battery_level is not None:
     #     battery = xml.etree.ElementTree.SubElement(config, 'rv:battery')
-    #     SDF.sub_element_text(battery, 'rv:level', battery_level)
+    #     sdf.sub_element_text(battery, 'rv:level', battery_level)
 
     # brain
     robot_brain_sdf = xml.etree.ElementTree.SubElement(config, 'rv:brain')

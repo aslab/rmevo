@@ -6,7 +6,7 @@ class Sensor(SDF.Posable):
     SENSOR_TYPE = None
 
     """
-    Generic SDF sensor.
+    Generic sdf sensor.
 
     Parent element: Link or Joint
     """
@@ -107,6 +107,6 @@ class TouchSensor(Sensor):
         collision_element = collision_element if type(collision_element) is str else collision_element.name
         contact = xml.etree.ElementTree.SubElement(self, 'contact')
         SDF.sub_element_text(contact, 'collision', collision_element)
-        # SDF.sub_element_text(contact, 'topic', 'topic_{}'.format(collision_element))
-        # SDF.sub_element_text(self, 'update_rate', 8.0)
+        # sdf.sub_element_text(contact, 'topic', 'topic_{}'.format(collision_element))
+        # sdf.sub_element_text(self, 'update_rate', 8.0)
         SDF.sub_element_text(self, 'always_on', True)

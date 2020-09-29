@@ -50,7 +50,7 @@ class FactoryNode:
 
         logger.info("Available modules are: ")
         for module in modules_list:
-            next_module = "[" + module.TYPE + ", " + str(len(module.children)) + "]"
+            next_module = "[" + module.type + ", " + str(len(module.children)) + "]"
             logger.info("\t" + next_module)
 
             modules_string = modules_string + next_module + "\n"

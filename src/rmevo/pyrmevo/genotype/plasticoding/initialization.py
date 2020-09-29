@@ -23,7 +23,7 @@ def generate_random_children(conf, depth):
 def generate_random_body(conf):
     module_template = None
     for module in conf.factory.modules_list:
-        if module.TYPE == "Core":
+        if module.type == "Core":
             module_template = module
 
     if module_template is not None:

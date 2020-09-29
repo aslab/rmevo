@@ -63,8 +63,8 @@ class Joint(SDF.Posable):
         SDF.sub_element_text(pid, 'rv:d', 0.0)
         SDF.sub_element_text(pid, 'rv:i_max', 0.0)
         SDF.sub_element_text(pid, 'rv:i_min', 0.0)
-        # SDF.sub_element_text(pid, 'rv:cmd_max', 0.0)
-        # SDF.sub_element_text(pid, 'rv:cmd_min', 0.0)
+        # sdf.sub_element_text(pid, 'rv:cmd_max', 0.0)
+        # sdf.sub_element_text(pid, 'rv:cmd_min', 0.0)
 
         return servomotor
 

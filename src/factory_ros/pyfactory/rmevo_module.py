@@ -51,12 +51,12 @@ class RMEvoModule:
     Base class allowing for constructing RMEvo components in an overviewable manner
     """
     DEFAULT_COLOR = (0.5, 0.5, 0.5)
-    TYPE = None
-    VISUAL_MESH = None
-    COLLISION_BOX = None
-    MASS = None
+    type = None
+    visual_mesh = None
+    collision_box = None
+    mass = None
     INERTIA = None
-    SDF = None
+    sdf = None
 
     def __init__(self):
         self.id = None
@@ -72,13 +72,13 @@ class RMEvoModule:
         return self.rgb if self.rgb is not None else self.DEFAULT_COLOR
 
     def to_yaml(self):
-        if self.TYPE is None:
-            raise RuntimeError('Module TYPE is not implemented for "{}",'
+        if self.type is None:
+            raise RuntimeError('Module type is not implemented for "{}",'
                                ' this should be defined.'.format(self.__class__))
 
         yaml_dict_object = OrderedDict()
         yaml_dict_object['id'] = self.id
-        yaml_dict_object['type'] = self.TYPE
+        yaml_dict_object['type'] = self.type
         yaml_dict_object['orientation'] = self.orientation
 
         if self.rgb is not None:
@@ -126,16 +126,16 @@ class RMEvoModule:
         :param tree_depth: current tree depth as string (for naming)
         :param parent_link: link of the parent (may be needed for certain modules)
         :param child_link: link of the child (may be needed for certain modules, like hinges)
-        :return: visual SDF element, collision SDF element, sensor SDF element.
-        Sensor SDF element may be None.
+        :return: visual sdf element, collision sdf element, sensor sdf element.
+        Sensor sdf element may be None.
         """
-        name = 'component_{}_{}__box'.format(tree_depth, self.TYPE)
+        name = 'component_{}_{}__box'.format(tree_depth, self.type)
         visual = SDF.Visual(name, self.rgb)
-        geometry = SDF.MeshGeometry(self.VISUAL_MESH)
+        geometry = SDF.MeshGeometry(self.visual_mesh)
         visual.append(geometry)
 
-        collision = SDF.Collision(name, self.MASS)
-        geometry = SDF.BoxGeometry(self.COLLISION_BOX)
+        collision = SDF.Collision(name, self.mass)
+        geometry = SDF.BoxGeometry(self.collision_box)
         collision.append(geometry)
 
         return visual, collision, None
@@ -145,7 +145,7 @@ class RMEvoModule:
         return BoxSlot(self.possible_slots(), orientation)
 
     def possible_slots(self):
-        box_geometry = self.COLLISION_BOX
+        box_geometry = self.collision_box
         return (
             (box_geometry[0] / -2.0, box_geometry[0] / 2.0),  # X
             (box_geometry[1] / -2.0, box_geometry[1] / 2.0),  # Y
@@ -173,19 +173,20 @@ class FactoryModule(RMEvoModule):
     """
     Inherits class RMEvoModule. Use module available from Factory
     """
-    TYPE = None
-    VISUAL_MESH = None
-    COLLISION_BOX = None
-    MASS = None
-    SDF = None
-    SDF_VISUAL = None
-    SDF_COLLISION = None
-    SDF_INERTIA = None
-    SLOT_DATA = None
 
     def __init__(self):
         super().__init__()
-        self.SLOT_DATA = []
+        self.slot_data = []
+        self.type = None
+        self.visual_mesh = None
+        self.collision_box = None
+        self.mass = None
+        self.sdf = None
+        self.sdf_visual = None
+        self.SDF_COLLISION = None
+        self.SDF_INERTIA = None
+        self.slot_data = None
+        self.joint_type = None
 
     def possible_slots(self):
         return self.SLOT_COORDINATES
@@ -204,11 +205,11 @@ class FactoryModule(RMEvoModule):
         new_module = FactoryModule()
 
         for module_template in factory.modules_list:
-            if module_template.TYPE == yaml_object['type']:
+            if module_template.type == yaml_object['type']:
                 new_module = copy.deepcopy(module_template)
                 break
 
-        if new_module.TYPE == None:
+        if new_module.type == None:
                 assert RuntimeError("Module not implemented")
 
         new_module.id = yaml_object['id']
@@ -242,7 +243,7 @@ class FactoryModule(RMEvoModule):
     def to_sdf(self, tree_depth='', parent_link=None, child_link=None):
         from pyfactory.SDF.geometry import Material
 
-        visual = self.SDF_VISUAL
+        visual = self.sdf_visual
         if visual is not None:
             material = Material(
                 ambient=(self.rgb[0], self.rgb[1], self.rgb[2], 1.0),
@@ -308,10 +309,10 @@ class BoxSlot:
             return SDF.math.Vector3(0, 1, 0)
         # elif slot == 4:
         #     # Right face tangent: back face
-        #     return SDF.math.Vector3(0, 1, 0)
+        #     return sdf.math.Vector3(0, 1, 0)
         # elif slot == 5:
         #     # Left face tangent: back face
-        #     return SDF.math.Vector3(0, 1, 0)
+        #     return sdf.math.Vector3(0, 1, 0)
         else:
             raise RuntimeError("Invalid orientation")
 
