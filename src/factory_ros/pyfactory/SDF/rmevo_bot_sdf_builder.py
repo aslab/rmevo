@@ -69,8 +69,8 @@ def rmevo_bot_to_sdf(robot, robot_pose, nice_format, self_collide=True):
         model.append(link)
 
     # ADD BRAIN
-    #plugin_elem = _sdf_brain_plugin_conf(robot.brain, sensors, actuators, robot_genome=None)
-    #model.append(plugin_elem)
+    plugin_elem = _sdf_brain_plugin_conf(robot.brain, sensors, actuators, robot_genome=None)
+    model.append(plugin_elem)
 
     # XML RENDER PHASE #
     def prettify(rough_string, indent='\t'):
@@ -161,7 +161,10 @@ def _module_to_sdf(module, parent_link, parent_slot, parent_collision, slot_chai
 
         child_visual, child_collision, imu_core_sensor = child_module.to_sdf('', child_link)
 
-        joint = SDF.Joint(module.id, module.type, module.joint_type, parent_link, child_link, module.axis)
+        if module.joint_type == 'revolute':
+            joint = SDF.Joint(module.id, module.type, 'revolute', parent_link, child_link, module.axis, motorized=True)
+        else:
+            joint = SDF.Joint(module.id, module.type, module.joint_type, parent_link, child_link, module.axis)
 
         joint_parent_slot = module.slot_data[0]
         joint_child_slot = module.slot_data[1]
@@ -324,17 +327,17 @@ def _sdf_brain_plugin_conf(
     # brain
     robot_brain_sdf = xml.etree.ElementTree.SubElement(config, 'rv:brain')
 
-    robot_learner = robot_brain.learner_sdf()
-    if robot_learner is None:
-        xml.etree.ElementTree.SubElement(robot_brain_sdf, 'rv:learner', {'type': 'None'})
-    else:
-        robot_brain_sdf.append(robot_learner)
-
-    robot_controller = robot_brain.controller_sdf()
-    if robot_controller is None:
-        xml.etree.ElementTree.SubElement(robot_brain_sdf, 'rv:controller', {'type': 'None'})
-    else:
-        robot_brain_sdf.append(robot_controller)
+    # robot_learner = robot_brain.learner_sdf()
+    # if robot_learner is None:
+    #     xml.etree.ElementTree.SubElement(robot_brain_sdf, 'rv:learner', {'type': 'None'})
+    # else:
+    #     robot_brain_sdf.append(robot_learner)
+    #
+    # robot_controller = robot_brain.controller_sdf()
+    # if robot_controller is None:
+    #     xml.etree.ElementTree.SubElement(robot_brain_sdf, 'rv:controller', {'type': 'None'})
+    # else:
+    #     robot_brain_sdf.append(robot_controller)
 
     # sensors
     sensors_elem = xml.etree.ElementTree.SubElement(robot_brain_sdf, 'rv:sensors')
