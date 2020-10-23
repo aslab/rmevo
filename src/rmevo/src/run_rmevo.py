@@ -14,11 +14,13 @@ from pyrmevo.parser import parser
 class RMEvoCore:
     def __init__(self, arguments):
         if arguments.manager is not None:
-            # this split will give errors on windows
-            manager_lib = os.path.splitext(arguments.manager)[0]
-            manager_lib = '.'.join(manager_lib.split('/'))
-            # manager = importlib.import_module(manager_lib,'pyrmevo.tutorials').run
-            self.manager = importlib.import_module(manager_lib, package='rmevo').run
+            if os.path.isfile(arguments.manager):
+                spec = importlib.util.spec_from_file_location("manager", arguments.manager)
+                manager_lib = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(manager_lib)
+                self.manager = manager_lib.run
+            else:
+                raise ValueError("Given file does not exist.")
 
         else:
             raise ValueError("RMEvo needs manager argument")
