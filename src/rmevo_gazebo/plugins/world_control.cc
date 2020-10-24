@@ -15,9 +15,6 @@
 // Project dependencies
 #include <rmevo_gazebo/FitnessEvaluation.h>
 
-/// \example examples/plugins/world_edit.cc
-/// This example creates a WorldPlugin, initializes the Transport system by
-/// creating a new Node, and publishes messages to alter gravity.
 namespace gazebo
 {
   class WorldControl : public WorldPlugin
@@ -48,27 +45,6 @@ namespace gazebo
         ROS_INFO("Launching world controller plugin.");
 
         advertiseServices();
-
-//        // Create a new transport node
-//        transport::NodePtr node(new transport::Node());
-//
-//        // Initialize the node with the world name
-//        node->Init(_parent->Name());
-//
-//        // Create a publisher on the ~/physics topic
-//        transport::PublisherPtr physicsPub =
-//        node->Advertise<msgs::Physics>("~/physics");
-//
-//        msgs::Physics physicsMsg;
-//        physicsMsg.set_type(msgs::Physics::ODE);
-//
-//        // Set the step time
-//        physicsMsg.set_max_step_size(0.01);
-
-        // Change gravity
-        //msgs::Set(physicsMsg.mutable_gravity(),
-        //    ignition::math::Vector3d(0.01, 0, 0.1));
-        //physicsPub->Publish(physicsMsg);
     }
 
     void advertiseServices(){
@@ -98,11 +74,7 @@ namespace gazebo
         }
 
         res.robot_fitness = count_entity_children(model);
-        ROS_INFO_NAMED("WorldControl", "A total of %f children were found.", res.robot_fitness);
-//        for (int i = 0; i < res.robot_fitness; i++){
-//            gazebo::physics::BasePtr child = model->GetChild(i);
-//            ROS_INFO_NAMED("WorldControl", "Child named %s was found.", child->GetName().c_str());
-//        }
+        ROS_INFO_NAMED("WorldControl", "Fitness of the robot is %f.", res.robot_fitness);
         res.success = true;
         return true;
     }
