@@ -10,6 +10,6 @@
     <include>
       <uri>model://rock</uri>
     </include>
-    <plugin filename="libworld_control.so" name="world_control"/>
+    <plugin filename="libexample_control.so" name="example_control"/>
   </world>
 </sdf>

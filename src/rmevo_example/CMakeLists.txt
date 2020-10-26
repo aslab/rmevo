@@ -12,6 +12,12 @@ find_package(catkin REQUIRED COMPONENTS
   gazebo_plugins
   roscpp
   rospy
+  rmevo_gazebo
+)
+
+generate_messages(
+    DEPENDENCIES
+    rmevo_gazebo
 )
 
 ## System dependencies are found with CMake's conventions
@@ -32,6 +38,11 @@ catkin_package(
 #  LIBRARIES test1
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
+)
+
+include_directories(
+${catkin_INCLUDE_DIRS}
+${GAZEBO_INCLUDE_DIRS}
 )
 
 ###########
@@ -58,3 +69,6 @@ install(DIRECTORY models/
 # Install all the launch files
 install(DIRECTORY launch/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${PROJECT_NAME}/launch)
+
+add_library(example_control SHARED worlds/example_control.cc)
+target_link_libraries(example_control ${GAZEBO_LIBRARIES})
