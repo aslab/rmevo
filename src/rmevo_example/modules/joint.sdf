@@ -1,0 +1,38 @@
+﻿<sdf version='1.6'>
+  <model name='joint'>
+  <joint name='revolute_joint' type='revolute'>
+      <child>base_left_1</child>
+      <parent>base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.392688</lower>
+          <upper>0.785</upper>
+          <effort>1000</effort>
+          <velocity>100</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    
+    <rmevo>
+      <slots>
+        <slot name="0">
+          <pos>0 0 0</pos>
+          <norm>0 0 1</norm>
+          <tan>1 0 0</tan>
+        </slot>
+        <slot name="1">
+          <pos>0 0 0</pos>
+          <norm>0 0 -1</norm>
+          <tan>1 0 0</tan>
+        </slot>
+      </slots>
+    </rmevo>
+    
+  </model>
+</sdf>
