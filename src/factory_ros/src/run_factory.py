@@ -56,6 +56,20 @@ class FactoryNode:
             modules_string = modules_string + next_module + "\n"
         return modules_string
 
+    # Gets the internal params of a given modules
+    def get_module_internal_params(self, req):
+        modules_list = self.factory.get_modules_list()
+        for module in modules_list:
+            if module.TYPE == req.input:
+                logger.info("Internal params of module " + module.TYPE + " are: ")
+                params_string = ""
+                for param in module.internal_params:
+                    next_param = param.name + " " + param.type + " " + param.min + " " + param.max
+                    logger.info("\t" + next_param)
+
+                    params_string = params_string + next_param + "\n"
+        return params_string
+
     def set_pose(self, position=[0, 0, 0], orientation=[0, 0, 0]):
         from geometry_msgs.msg import Pose
         pose = Pose()
@@ -92,6 +106,7 @@ class FactoryNode:
     def advertise_services(self):
         rospy.Service(rospy.get_name() + '/load_modules', ImportModules, self.import_modules_from_dir)
         rospy.Service(rospy.get_name() + '/list_modules', OutputString, self.get_modules_list)
+        rospy.Service(rospy.get_name() + '/module_internal_params', OutputString, self.get_module_internal_params)
         rospy.Service(rospy.get_name() + '/generate_robot', RobotConfiguration, self.generate_robot)
 
 

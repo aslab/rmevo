@@ -38,6 +38,15 @@ class Geometry(Enum):
     Mesh = 4
 
 
+class InternalParam:
+    def __init__(self, name, type, range):
+        self.name = name
+        self.type = type
+        aux = range.split(' ')
+        self.min = aux[0]
+        self.max = aux[1]
+
+
 class Factory:
     def __init__(self):
         self.modules_list = []
@@ -121,6 +130,13 @@ class Factory:
             module.children.pop()
         else:
             assert AttributeError("Tag free_slots not found in module %s, using default", module.TYPE)
+
+        params_tag = rmevo_tree.find('internal_params')
+        if params_tag is not None:
+            module.internal_params = []
+            for child in params_tag:
+                new_param = InternalParam(child.get('name'), child.get('type'), child.get('range'))
+                module.internal_params.append(new_param)
 
     def parse_model(self, module, model_tree):
         module.TYPE = model_tree.attrib['name']
