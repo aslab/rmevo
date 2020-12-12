@@ -35,6 +35,7 @@ class RMEvoModule:
         self.children = []
         self.info = None
         self.robot = None
+        self.internal_params = []
 
     def color(self):
         return self.rgb if self.rgb is not None else self.DEFAULT_COLOR

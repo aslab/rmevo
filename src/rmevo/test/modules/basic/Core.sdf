@@ -64,6 +64,11 @@
           <tan>1 0 0</tan>
         </slot>
       </slots>
+
+      <internal_params>
+        <param name="x" type="float" range="-10 10"/>
+        <param name="y" type="float" range="-10 10"/>
+      </internal_params>
     </rmevo>
   </model>
 </sdf>

@@ -6,6 +6,15 @@ from pyrmevo.custom_logging.logger import logger
 from pyrmevo.rmevo_bot.rmevo_module import RMEvoModule
 
 
+class InternalParam:
+    def __init__(self, name, type, range):
+        self.name = name
+        self.type = type
+        aux = range.split(' ')
+        self.min = aux[0]
+        self.max = aux[1]
+
+
 class FactoryManager:
     modules_list = None
 
@@ -25,6 +34,7 @@ class FactoryManager:
             logger.info("Looking for factory services.")
             self.generate_service = rospy.ServiceProxy('/factory/generate_robot', RobotConfiguration)
             self.list_modules_services = rospy.ServiceProxy('factory/list_modules', OutputString)
+            self.list_internal_params = rospy.ServiceProxy('factory/module_internal_params', OutputString)
         except:
             raise RuntimeError("Service not found, check if factory is running.")
 
@@ -42,6 +52,13 @@ class FactoryManager:
                 new_module.TYPE = module_type
                 for _i in range(int(module_slots)):
                     new_module.children.append([None])
+
+                internal_params_srv = self.list_internal_params(module_type)
+                internal_params_string = internal_params_srv.Ouput_message.split('n')
+                for param in internal_params_string:
+                    param = param.split(' ')
+                    new_param = InternalParam(param[0], param[1], param[2], param[3])
+                    new_module.internal_params.append(new_param)
 
                 self.modules_list.append(new_module)
 
