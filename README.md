@@ -26,9 +26,7 @@ The RMEvo framework is composed by three main nodes:
   - The ROS structure allows external nodes to control the robot in the simulation
 
 The relation between them is shown in the following image:
-<p align="center">
-  <img src="https://github.com/aslab/rmevo/blob/master/images/Nodes.svg" width="600">
-</p>
+![Nodes](./images/Nodes.svg = 600x)
 
 ### Grammar
 
