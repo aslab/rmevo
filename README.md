@@ -26,7 +26,9 @@ The RMEvo framework is composed by three main nodes:
   - The ROS structure allows external nodes to control the robot in the simulation
 
 The relation between them is shown in the following image:
-![Nodes](./images/Nodes.svg = 600x)
+<p align="center">
+  <img src="https://github.com/aslab/rmevo/blob/master/images/Nodes.svg" width="600">
+</p>
 
 ### Grammar
 
@@ -40,7 +42,7 @@ Each node in the tree has the following attributes:
 - Slots: array with references to the children of that node. The number of slots in a module comes predefined in the module template.
 
 <p align="center">
-  <img src="./images/tree_node.svg" width="400">
+  <img src="https://github.com/aslab/rmevo/blob/master/images/tree_node.svg" width="400">
 </p>
 
 ### Module templates
