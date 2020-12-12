@@ -40,7 +40,7 @@ Each node in the tree has the following attributes:
 - Slots: array with references to the children of that node. The number of slots in a module comes predefined in the module template.
 
 <p align="center">
-  <img src="https://github.com/aslab/rmevo/blob/master/images/tree_node.svg" width="400">
+  <img src="./images/tree_node.svg" width="400">
 </p>
 
 ### Module templates
