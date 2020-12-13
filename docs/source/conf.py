@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -21,8 +22,8 @@ from recommonmark.transform import AutoStructify
 # -- Project information -----------------------------------------------------
 
 project = 'RMEvo Framework'
-copyright = '2020, Jorge Poveda'
-author = 'Jorge Poveda'
+copyright = '2020, J. Poveda'
+author = 'J. Poveda'
 
 
 # -- General configuration ---------------------------------------------------
@@ -33,7 +34,11 @@ author = 'Jorge Poveda'
 extensions = ['sphinx.ext.autodoc',
             'sphinx.ext.autosummary',
             'sphinx_ros',
-            'm2r2']
+            'm2r2',
+            'breathe']
+
+breathe_projects = { "RMEvoFramework": "../xml" }
+breathe_default_project = "RMEvoFramework"
 
 
 # Add any paths that contain templates here, relative to this directory.
