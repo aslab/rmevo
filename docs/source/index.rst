@@ -13,6 +13,9 @@ Welcome to RMEvo Framework's documentation!
    intro
    readme_link
    api
+   packages
+
+.. doxygenfile:: rmevo_gazebo/plugins/world_control.cc
 
 
 
