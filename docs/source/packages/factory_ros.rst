@@ -32,26 +32,11 @@ Dependencies
 
 :Execution: :ros:pkg:`message_runtime`
 
-
-********
-Messages
-********
-
-.. ros:message:: Foo
-
-  :msg_param header: Header of the message.
-  :msg_paramtype header: :ros:msg:`Header`
-  :msg_param pose: The 3D pose of the foo that is detected.
-  :msg_paramtype pose: :ros:msg:`geometry_msgs/Pose`
-  :msg_param color: The color of the foo.
-  :msg_paramtype color: :ros:msg:`string`
-
-
 ********
 Services
 ********
 
-.. ros:service:: ImportModules
+.. ros:service:: load_modules
 
   :req_param input_file: Path of the folder containing the modules to import into the Factory.
   :req_paramtype input_file: :ros:msg:`string`
@@ -60,39 +45,36 @@ Services
 
   This service calls the function import_modules_from_dir and imports the modules of the input folder.
 
-.. ros:service:: OutputString
+.. ros:service:: list_modules
 
-  :resp_param Output_message: Answer to a query asked to the node.
+  :resp_param Output_message: Response containing the available modules.
+  
+      The modules are concatenated using a */n*.
+    
+      The modules have the form **[type, children_number]** where:
+
+      * **type**: name of the module.
+      * **children_number**: number of slots available in the module.
+
   :resp_paramtype Output_message: :ros:msg:`string`
 
-  This service calls the function import_modules_from_dir and imports the modules of the input folder.
+  The :ros:srv:`factory_ros/list_modules` returns a string with the list of modules available.
+  The modules are concatenated using a */n*.
 
-.. ros:service:: ImportModules
+.. ros:service:: generate_robot
 
-  :req_param input_file: Path of the folder containing the modules to import into the Factory.
-  :req_paramtype input_file: :ros:msg:`string`
-  :resp_param ouput_message: Not asigned.
-  :resp_paramtype ouput_message: :ros:msg:`string`
+  :req_param model_name: Name of the model to spawn.
+  :req_paramtype model_name: :ros:msg:`string`
+  :req_param model_yaml: String with yaml format with the robot configuration.
+  :req_paramtype model_yaml: :ros:msg:`string`
+  :resp_param success: Return true if spawnning success.
+  :resp_paramtype success: :ros:msg:`bool`
+  :resp_param status_message: Feedback if available.
+  :resp_paramtype status_message: :ros:msg:`string`
 
-  This service calls the function import_modules_from_dir and imports the modules of the input folder.
-
-
-
-********
-Actions
-********
-
-.. ros:action:: load_modules
-
-  :goal_param setpoint: The setpoint to reach.
-  :goal_paramtype setpoint: :ros:msg:`geometry_msgs/Point`
-  :result_param steady_state_error: Error between achieved point and setpoint.
-  :result_paramtype steady_state_error: :ros:msg:`geometry_msgs/Point`
-  :feedback_param tracking_error: Error between ideal trajectory and current
-                                  trajectory.
-  :feedback_paramtype tracking_error: :ros:msg:`geometry_msgs/Point`
-  :feedback_param power: Current power usage per joint.
-  :feedback_paramtype power: :ros:msg:`float32[]`
+  This service calls the factory method *generate_sdf* to assemble all the required modules
+  with the given configuration. The generated SDF is then spawned into the gazebo simulation,
+  through the service :ros:srv:`rmevo_gazebo/spawn_sdf_model`.
 
 
 .. toctree::
