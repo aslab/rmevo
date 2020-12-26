@@ -17,6 +17,9 @@ The robots generated are sent to the :ros:pkg`rmevo_gazebo`, which spawns them i
 
 :Links: * `Repository <https://github.com/aslab/rmevo>`_
 
+**************
+Specifications
+**************
 ************
 Dependencies
 ************
