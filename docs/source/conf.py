@@ -11,9 +11,13 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
+import os
+import sys
 # sys.path.insert(0, os.path.abspath('.'))
+sys.path.append(os.path.abspath('../../src/factory_ros'))
+sys.path.append(os.path.abspath('../../src/rmevo'))
+sys.path.append(os.path.abspath('../../src/rmevo_gazebo'))
+sys.path.append(os.path.abspath('../../devel'))
 
 import recommonmark
 from recommonmark.transform import AutoStructify
