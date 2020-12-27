@@ -17,7 +17,6 @@ import sys
 sys.path.append(os.path.abspath('../../src/factory_ros'))
 sys.path.append(os.path.abspath('../../src/rmevo'))
 sys.path.append(os.path.abspath('../../src/rmevo_gazebo'))
-sys.path.append(os.path.abspath('../../devel'))
 
 import recommonmark
 from recommonmark.transform import AutoStructify
@@ -37,6 +36,7 @@ author = 'J. Poveda'
 # ones.
 extensions = ['sphinx.ext.autodoc',
             'sphinx.ext.autosummary',
+            'sphinx.ext.todo',
             'sphinx_ros',
             'm2r2',
             'breathe']
@@ -66,6 +66,8 @@ exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
+
+todo_include_todos = True
 
 # -- Options for HTML output -------------------------------------------------
 

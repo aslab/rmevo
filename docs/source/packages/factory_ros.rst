@@ -12,14 +12,11 @@ Description
 ***********
 
 The :ros:pkg:`factory_ros` package implements the RMEvo Factory.
-Its main purpouse is to parse the given input modules and generate the morphological configurations evolved by the :ros:pkg`rmevo`.
-The robots generated are sent to the :ros:pkg`rmevo_gazebo`, which spawns them into the simulation.
+Its main purpouse is to parse the given input modules and generate the morphological configurations evolved by the :ros:pkg:`rmevo`.
+The robots generated are sent to the :ros:pkg:`rmevo_gazebo`, which spawns them into the simulation.
 
 :Links: * `Repository <https://github.com/aslab/rmevo>`_
 
-**************
-Specifications
-**************
 ************
 Dependencies
 ************
@@ -35,9 +32,62 @@ Dependencies
 
 :Execution: :ros:pkg:`message_runtime`
 
-********
+*********
+Interface
+*********
+
+Factory Node
+------------
+
+To start the Factory Node run:
+
+``rosrun factory_ros run_factory.py``
+
+Using the flag ``--modules``, the user can directly provide the path to the directory containing the module
+library.
+
+The modules can also be imported using the service :func:`factory_ros/load_modules`
+
+.. todo:: Link the other method
+
 Services
-********
+--------
+
+The node starts several services that can be call through ``rosservice``.
+
+
+.. function:: factory_ros/load_modules
+
+  :Service description: :ros:srv:`~factory_ros/load_modules`
+
+  Calls the function :meth:`~src.run_factory.FactoryNode.import_modules_from_dir` and imports the modules from the input folder.
+ 
+
+.. function:: factory_ros/list_modules
+
+  :Service description: :ros:srv:`~factory_ros/list_modules`
+
+  Returns a string with the list of modules available. Some information of the modules is also given.
+  The modules are concatenated using a */n*.
+
+  This service provides the basic information of the modules to the :ros:node:`RMEvo_Core`.
+  This information is used to generate the genotype of the population.
+ 
+
+.. function:: factory_ros/generate_robot
+
+  :Service description: :ros:srv:`~factory_ros/generate_robot`
+
+  This service calls the factory method :class:`~src.run_factory.FactoryNode.generate_robot()` to assemble all the required modules
+  with the given configuration. The generated SDF is then spawned into the gazebo simulation,
+  through the service :ros:srv:`rmevo_gazebo/spawn_sdf_model`. 
+
+**************
+Specifications
+**************
+
+Services
+--------
 
 .. ros:service:: load_modules
 
@@ -45,8 +95,6 @@ Services
   :req_paramtype input_file: :ros:msg:`string`
   :resp_param ouput_message: Not asigned.
   :resp_paramtype ouput_message: :ros:msg:`string`
-
-  This service calls the function import_modules_from_dir and imports the modules of the input folder.
 
 .. ros:service:: list_modules
 
@@ -61,8 +109,6 @@ Services
 
   :resp_paramtype Output_message: :ros:msg:`string`
 
-  The :ros:srv:`factory_ros/list_modules` returns a string with the list of modules available.
-  The modules are concatenated using a */n*.
 
 .. ros:service:: generate_robot
 
@@ -75,9 +121,11 @@ Services
   :resp_param status_message: Feedback if available.
   :resp_paramtype status_message: :ros:msg:`string`
 
-  This service calls the factory method *generate_sdf* to assemble all the required modules
-  with the given configuration. The generated SDF is then spawned into the gazebo simulation,
-  through the service :ros:srv:`rmevo_gazebo/spawn_sdf_model`.
+  .. autoclass:: src.run_factory.FactoryNode
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 
 .. toctree::
