@@ -14,9 +14,9 @@
 import os
 import sys
 # sys.path.insert(0, os.path.abspath('.'))
-sys.path.append(os.path.abspath('../../src/factory_ros'))
-sys.path.append(os.path.abspath('../../src/rmevo'))
-sys.path.append(os.path.abspath('../../src/rmevo_gazebo'))
+sys.path.append(os.path.abspath('../../../src/factory_ros'))
+sys.path.append(os.path.abspath('../../../src/rmevo'))
+sys.path.append(os.path.abspath('../../../src/rmevo_gazebo'))
 
 import recommonmark
 from recommonmark.transform import AutoStructify
@@ -41,7 +41,7 @@ extensions = ['sphinx.ext.autodoc',
             'm2r2',
             'breathe']
 
-breathe_projects = { "RMEvoFramework": "../xml" }
+breathe_projects = { "RMEvoFramework": "../../doxygen/build/xml" }
 breathe_default_project = "RMEvoFramework"
 
 
@@ -87,3 +87,5 @@ html_static_path = ['static']
 #             'auto_toc_tree_section': 'Contents',
 #             }, True)
 #     app.add_transform(AutoStructify)
+
+# -- Options for Latex output -------------------------------------------------
