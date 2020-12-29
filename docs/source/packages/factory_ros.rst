@@ -46,9 +46,8 @@ To start the Factory Node run:
 Using the flag ``--modules``, the user can directly provide the path to the directory containing the module
 library.
 
-The modules can also be imported using the service :func:`factory_ros/load_modules`
+The modules can also be imported using the service :func:`factory_ros/load_modules`.
 
-.. todo:: Link the other method
 
 Services
 --------
@@ -58,14 +57,14 @@ The node starts several services that can be call through ``rosservice``.
 
 .. function:: factory_ros/load_modules
 
-  :Service description: :ros:srv:`~factory_ros/load_modules`
+  :Service description: :ros:srv:`~factory_ros/ImportModules`
 
   Calls the function :meth:`~src.run_factory.FactoryNode.import_modules_from_dir` and imports the modules from the input folder.
  
 
 .. function:: factory_ros/list_modules
 
-  :Service description: :ros:srv:`~factory_ros/list_modules`
+  :Service description: :ros:srv:`~factory_ros/OutputString`
 
   Returns a string with the list of modules available. Some information of the modules is also given.
   The modules are concatenated using a */n*.
@@ -76,7 +75,7 @@ The node starts several services that can be call through ``rosservice``.
 
 .. function:: factory_ros/generate_robot
 
-  :Service description: :ros:srv:`~factory_ros/generate_robot`
+  :Service description: :ros:srv:`~factory_ros/RobotConfiguration`
 
   This service calls the factory method :class:`~src.run_factory.FactoryNode.generate_robot()` to assemble all the required modules
   with the given configuration. The generated SDF is then spawned into the gazebo simulation,
@@ -89,14 +88,14 @@ Specifications
 Services
 --------
 
-.. ros:service:: load_modules
+.. ros:service:: ImportModules
 
   :req_param input_file: Path of the folder containing the modules to import into the Factory.
   :req_paramtype input_file: :ros:msg:`string`
   :resp_param ouput_message: Not asigned.
   :resp_paramtype ouput_message: :ros:msg:`string`
 
-.. ros:service:: list_modules
+.. ros:service:: OutputString
 
   :resp_param Output_message: Response containing the available modules.
   
@@ -110,7 +109,7 @@ Services
   :resp_paramtype Output_message: :ros:msg:`string`
 
 
-.. ros:service:: generate_robot
+.. ros:service:: RobotConfiguration
 
   :req_param model_name: Name of the model to spawn.
   :req_paramtype model_name: :ros:msg:`string`
@@ -120,6 +119,11 @@ Services
   :resp_paramtype success: :ros:msg:`bool`
   :resp_param status_message: Feedback if available.
   :resp_paramtype status_message: :ros:msg:`string`
+
+
+****************
+Internal Classes
+****************
 
   .. autoclass:: src.run_factory.FactoryNode
    :members:

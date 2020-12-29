@@ -15,7 +15,16 @@ from factory_ros.srv import ImportModules, OutputString, RobotConfiguration
 
 
 class FactoryNode:
+    """ This class implements the Factory Node.
+
+    The Factory Node loads the modules from the given directory. It implements the methods that
+    combine those modules into complex configurations and spawn them into the Gazebo World.
+
+    :param arguments: Arguments given in the `rosrun` executable.
+    """
     def __init__(self, arguments):
+        """ Constructor method. Initializes and starts the node
+        """
         self.arguments = arguments
         if arguments.modules is None:
             logger.error("Must provide --modules argument with folder to modules")
@@ -41,10 +50,19 @@ class FactoryNode:
         rospy.spin()
 
     def import_modules_from_dir(self, req):
+        """Service callback that uses the factory method import_modules_from_dir to import the modules
+        from the given folder.
+            
+        :param req: :ros:srv:`~factory_ros/ImportModules` `request`.
+        """
         self.factory.import_modules_from_dir(req)
 
-    # Gets the modules list from the factory class
-    def get_modules_list(self, _req):
+    def get_modules_list(self, req):
+        """ Service callback that gets the modules list from the factory class and returns it as a string.
+
+        :param req: :ros:srv:`~factory_ros/OutputString` `request`.
+        :return: Modules list.
+        """
         modules_list = self.factory.get_modules_list()
         modules_string = ""
 
@@ -57,6 +75,13 @@ class FactoryNode:
         return modules_string
 
     def set_pose(self, position=[0, 0, 0], orientation=[0, 0, 0]):
+        """ Generates a pose object with the information given in the parameters.
+
+        :param position: Position for the Pose object, defaults to [0, 0, 0].
+        :type position: list, optional
+        :param orientation: Orientation for the Pose object, defaults to [0, 0, 0].
+        :type orientation: list, optional
+        """
         from geometry_msgs.msg import Pose
         pose = Pose()
         pose.position.x = position[0]
@@ -69,9 +94,11 @@ class FactoryNode:
 
         return pose
 
-    # Generates the sdf for the configuration given and spawns it into gazebo
     def generate_robot(self, req):
+        """ Generates the sdf for the configuration given and spawns it into gazebo.
 
+        :param req: :ros:srv:`~factory_ros/RobotConfiguration` request.
+        """
         model_name = req.model_name
         yaml_string = req.model_yaml
         robot_namespace = model_name
@@ -88,8 +115,9 @@ class FactoryNode:
 
         return [True, '']
 
-    # Registers all the services the node offers
     def advertise_services(self):
+        """ Starts all the services the node offers.
+        """
         rospy.Service(rospy.get_name() + '/load_modules', ImportModules, self.import_modules_from_dir)
         rospy.Service(rospy.get_name() + '/list_modules', OutputString, self.get_modules_list)
         rospy.Service(rospy.get_name() + '/generate_robot', RobotConfiguration, self.generate_robot)
