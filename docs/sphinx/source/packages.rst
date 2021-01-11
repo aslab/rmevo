@@ -7,4 +7,5 @@ Packages
    
    
    packages/factory_ros
+   packages/rmevo_gazebo
 

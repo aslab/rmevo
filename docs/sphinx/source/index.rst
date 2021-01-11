@@ -15,8 +15,6 @@ Welcome to RMEvo Framework's documentation!
    api
    packages
 
-.. doxygenfile:: rmevo_gazebo/plugins/world_control.cc
-
 
 
 Indices and tables
