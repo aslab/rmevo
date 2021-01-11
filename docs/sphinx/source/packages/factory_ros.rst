@@ -55,14 +55,14 @@ Services
 The node starts several services that can be call through ``rosservice``.
 
 
-.. function:: factory_ros/load_modules
+.. function:: /factory_ros/load_modules
 
   :Service description: :ros:srv:`~factory_ros/ImportModules`
 
   Calls the function :meth:`~src.run_factory.FactoryNode.import_modules_from_dir` and imports the modules from the input folder.
  
 
-.. function:: factory_ros/list_modules
+.. function:: /factory_ros/list_modules
 
   :Service description: :ros:srv:`~factory_ros/OutputString`
 
@@ -73,7 +73,7 @@ The node starts several services that can be call through ``rosservice``.
   This information is used to generate the genotype of the population.
  
 
-.. function:: factory_ros/generate_robot
+.. function:: /factory_ros/generate_robot
 
   :Service description: :ros:srv:`~factory_ros/RobotConfiguration`
 
@@ -129,8 +129,6 @@ Internal Classes
    :members:
    :undoc-members:
    :show-inheritance:
-
-
 
 .. toctree::
    :maxdepth: 3
