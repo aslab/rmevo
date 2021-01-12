@@ -1,7 +1,7 @@
 .. ros:package:: rmevo_gazebo
 
-``rmevo_gazebo``
-****************
+``rmevo_gazebo`` package
+************************
 
 .. contents::
   :local:
@@ -106,13 +106,3 @@ World Control Internal Classes
 
   .. doxygenclass:: gazebo::WorldControl
     :members:
-
-.. toctree::
-   :maxdepth: 3
-   :caption: Contents
-
-.. automodule:: pyfactory
-   :members:
-   :undoc-members:
-   :inherited-members:
-   :show-inheritance:

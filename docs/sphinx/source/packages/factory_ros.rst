@@ -1,7 +1,7 @@
 .. ros:package:: factory_ros
 
-``factory_ros``
-***************
+``factory_ros`` package
+***********************
 
 .. contents::
   :local:
@@ -129,10 +129,6 @@ Internal Classes
    :members:
    :undoc-members:
    :show-inheritance:
-
-.. toctree::
-   :maxdepth: 3
-   :caption: Contents
 
 .. automodule:: pyfactory
    :members:
