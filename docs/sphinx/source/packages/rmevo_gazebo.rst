@@ -13,7 +13,9 @@ Description
 
 The :ros:pkg:`rmevo_gazebo` package implements the Gazebo World used by the RMEvo_Core :ros:pkg:`rmevo`.
 
-The world is implemented in SDF, and can be found
+This World implements a plugin that evaluates the fitness of the robots spawned in the Gazebo simulation.
+The fitness function definition is, therefore, done in this node. This may seem counter intuitive, but this
+allows the user to use other simulators, or even to perform real world evaluation.
 
 :Links: * `Repository <https://github.com/aslab/rmevo>`_
 

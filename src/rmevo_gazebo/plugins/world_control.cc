@@ -97,7 +97,7 @@ namespace gazebo
      * Callback function of the service `/world_control/evaluate_fitness`.
      * 
      * This function should be changed by the user to fit his needs. By default, it calls the function
-     * \ref count_entity_children(gazebo::physics::BasePtr).
+     * \ref `count_entity_children(gazebo::physics::BasePtr)`.
      * 
      * This implementations serves as a test.
      * @param[in] req Service request (empty).
