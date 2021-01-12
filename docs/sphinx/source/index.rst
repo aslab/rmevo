@@ -12,7 +12,6 @@ Welcome to RMEvo Framework's documentation!
 
    intro
    readme_link
-   api
    packages
 
 

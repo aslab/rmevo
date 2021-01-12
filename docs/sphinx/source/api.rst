@@ -1,6 +1,9 @@
 API
 ***
 
+:mod:`factory_manager` Package
+------------------------------
+
 .. automodule:: pyrmevo.factory.factory_manager
    :members:
    :undoc-members:
