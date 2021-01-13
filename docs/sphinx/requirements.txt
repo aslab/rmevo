@@ -4,4 +4,4 @@ breathe
 rospkg
 roslibpy
 numpy
-cairo
+pycairo
