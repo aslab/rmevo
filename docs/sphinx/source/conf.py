@@ -15,7 +15,7 @@ import os
 import sys
 # sys.path.insert(0, os.path.abspath('.'))
 sys.path.append(os.path.abspath('../../../src/factory_ros'))
-sys.path.append(os.path.abspath('../../../src/rmevo'))
+sys.path.append(os.path.abspath('../../../src/rmevo/pyrmevo'))
 sys.path.append(os.path.abspath('../../../src/rmevo_gazebo'))
 
 import recommonmark
