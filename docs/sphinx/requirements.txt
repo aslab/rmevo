@@ -2,6 +2,6 @@ m2r2
 sphinx-ros
 breathe
 rospkg
-rospy
+roslibpy
 numpy
 cairo
