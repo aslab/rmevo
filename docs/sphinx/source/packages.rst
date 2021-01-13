@@ -1,5 +1,5 @@
-Packages
-********
+ROS Packages
+*************
 
 .. toctree::
    :maxdepth: 3

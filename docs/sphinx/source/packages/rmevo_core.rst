@@ -69,10 +69,10 @@ This Node doesn't offer any services. However, it is important to note that
 uses the services published by :ros:pkg:`rmevo_gazebo` and :ros:pkg:`factory_ros`.
 
 *******************************
-RMevo_Core Internal Classes
+Python package: pyrmevo
 *******************************
 
 .. toctree::
-  :maxdepth: 5
+  :maxdepth: 2
 
-  apidoc/pyrmevo
+  apidoc/pyrmevo/pyrmevo
