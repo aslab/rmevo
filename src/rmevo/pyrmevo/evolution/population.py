@@ -8,6 +8,24 @@ import os
 
 
 class PopulationConfig:
+    """
+    Object that sets the particular configuration for the population
+
+    :param population_size: size of the population
+    :param genotype_constructor: class of the genotype used
+    :param genotype_conf: configuration for genotype constructor
+    :param fitness_conf: configuration for the fitness evaluation
+    :param mutation_operator: operator to be used in mutation
+    :param mutation_conf: configuration for mutation operator
+    :param crossover_operator: operator to be used in crossover
+    :param selection: selection type
+    :param parent_selection: selection type during parent selection
+    :param population_management: type of population management ie. steady state or generational
+    :param evaluation_time: duration of an experiment
+    :param experiment_name: name for the folder of the current experiment
+    :param experiment_management: object with methods for managing the current experiment
+    :param offspring_size (optional): size of offspring (for steady state)
+    """
     def __init__(self,
                  population_size: int,
                  genotype_constructor,
@@ -26,24 +44,7 @@ class PopulationConfig:
                  experiment_management,
                  offspring_size=None,
                  next_robot_id=1):
-        """
-        Creates a PopulationConfig object that sets the particular configuration for the population
-
-        :param population_size: size of the population
-        :param genotype_constructor: class of the genotype used
-        :param genotype_conf: configuration for genotype constructor
-        :param fitness_conf: configuration for the fitness evaluation
-        :param mutation_operator: operator to be used in mutation
-        :param mutation_conf: configuration for mutation operator
-        :param crossover_operator: operator to be used in crossover
-        :param selection: selection type
-        :param parent_selection: selection type during parent selection
-        :param population_management: type of population management ie. steady state or generational
-        :param evaluation_time: duration of an experiment
-        :param experiment_name: name for the folder of the current experiment
-        :param experiment_management: object with methods for managing the current experiment
-        :param offspring_size (optional): size of offspring (for steady state)
-        """
+        
         self.population_size = population_size
         self.genotype_constructor = genotype_constructor
         self.genotype_conf = genotype_conf
@@ -64,8 +65,7 @@ class PopulationConfig:
 
 
 class Population:
-    def __init__(self, conf: PopulationConfig, simulator_queue, analyzer_queue=None, next_robot_id=1):
-        """
+    """
         Creates a Population object that initialises the
         individuals in the population with an empty list
         and stores the configuration of the system to the
@@ -76,6 +76,7 @@ class Population:
         :param analyzer_queue: connection to the analyzer simulator queue
         :param next_robot_id: (sequential) id of the next individual to be created
         """
+    def __init__(self, conf: PopulationConfig, simulator_queue, analyzer_queue=None, next_robot_id=1):
         self.conf = conf
         self.individuals = []
         self.analyzer_queue = analyzer_queue
@@ -174,13 +175,19 @@ class Population:
 
     def evaluate_single_robot(self, individual):
         """
-        :param individual: individual
+        :param individual: individual to evaluate
+        :type individual: :class:`~pyrmevo.evolution.individual.Individual`
         :return: Returns fitness of individual
         """
 
         return self.conf.fitness_manager.evaluate_fitness(individual)
 
     def get_fittest_robot(self):
+        """
+        Returns the fittest robot of the population
+
+        :return: :class:`~pyrmevo.evolution.individual.Individual` with higher fitness
+        """
         fittest_robot = self.individuals[0]
         for current_robot in self.individuals:
             if current_robot.fitness > fittest_robot.fitness:
