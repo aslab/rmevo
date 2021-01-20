@@ -5,6 +5,18 @@ from pyrmevo.rmevo_bot.rmevo_bot import RMEvoBot
 
 
 def generate_random_children(conf, depth):
+    """
+    Generates a random child using the available modules.
+
+    If the depth is higher than 1, also calls recursively to itself, to asign random children to its nodes.
+    
+    The probability of empty children is set in the :class:`~pyrmevo.factory.factory_manager.FactoryManager`.
+
+    :param conf: Object containing the FactoryManager information
+    :type conf: :class:`~pyrmevo.factory.factory_manager.FactoryManager`
+    :param depth: depth value that the new tree with the child node as main node should have.
+    """
+    
     if depth is 0:
         return None
 
@@ -21,6 +33,15 @@ def generate_random_children(conf, depth):
 
 
 def generate_random_body(conf):
+    """
+    Generates a random body with the modules available.
+    
+    The body size will be limited by the max_depth parameters set in the
+    :class:`~pyrmevo.factory.factory_manager.FactoryManager`.
+    
+    :param conf: Object containing the FactoryManager information
+    :type conf: :class:`~pyrmevo.factory.factory_manager.FactoryManager`
+    """
     module_template = None
     for module in conf.factory.modules_list:
         if module.TYPE == "Core":
@@ -40,10 +61,10 @@ def generate_random_body(conf):
 
 def rmevo_random_initialization(conf, next_robot_id):
     """
-    Initializing a random genotype.
+    Initialize a random genotype.
+
     :type conf: PlasticodingConfig
-    :return: a Genome
-    :rtype: Plasticoding
+    :return: a new genotype
     """
     robot_id = "Robot_0_" + str(next_robot_id)
     new_individual = RMEvoBot(_id=robot_id, self_factory=conf.factory)

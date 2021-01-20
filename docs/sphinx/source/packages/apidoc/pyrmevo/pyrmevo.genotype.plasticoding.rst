@@ -2,7 +2,7 @@ pyrmevo.genotype.plasticoding package
 =====================================
 
 Subpackages
------------
+***********
 
 .. toctree::
    :maxdepth: 4
@@ -11,7 +11,7 @@ Subpackages
    pyrmevo.genotype.plasticoding.mutation
 
 Submodules
-----------
+**********
 
 pyrmevo.genotype.plasticoding.initialization module
 ---------------------------------------------------
@@ -24,15 +24,6 @@ pyrmevo.genotype.plasticoding.initialization module
 pyrmevo.genotype.plasticoding.plasticoding module
 -------------------------------------------------
 
-.. automodule:: pyrmevo.genotype.plasticoding.plasticoding
+.. autoclass:: pyrmevo.genotype.plasticoding.plasticoding.PlasticodingConfig
    :members:
    :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pyrmevo.genotype.plasticoding
-   :members:
-   :undoc-members:
-   :show-inheritance:

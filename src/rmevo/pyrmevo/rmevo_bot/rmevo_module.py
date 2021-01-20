@@ -1,6 +1,3 @@
-"""
-Class containing the body parts to compose a RMEvo robot
-"""
 from collections import OrderedDict
 from enum import Enum
 
@@ -22,7 +19,7 @@ def grams(x):
 
 class RMEvoModule:
     """
-    Base class allowing for constructing RMEvo components in an overviewable manner
+    Class that defines the body parts that can be used to compose a RMEvo robot.
     """
     DEFAULT_COLOR = (0.5, 0.5, 0.5)
     TYPE = None
@@ -40,6 +37,9 @@ class RMEvoModule:
         return self.rgb if self.rgb is not None else self.DEFAULT_COLOR
 
     def to_yaml(self):
+        """
+        Export the module to yaml format.
+        """
         if self.TYPE is None:
             raise RuntimeError('Module TYPE is not implemented for "{}",'
                                ' this should be defined.'.format(self.__class__))
@@ -63,6 +63,9 @@ class RMEvoModule:
         return yaml_dict_object
 
     def iter_children(self):
+        """
+        Returns a list with the children of the module.
+        """
         return enumerate(self.children)
 
     def _generate_yaml_children(self):
@@ -78,7 +81,8 @@ class RMEvoModule:
 
     def has_children(self):
         """
-        Check whether module has children
+        Check whether module has children.
+
         :return: True if module has children
         """
         has_children = False

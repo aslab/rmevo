@@ -97,6 +97,8 @@ class Population:
     def init_pop(self, recovered_individuals=[]):
         """
         Populates the population (individuals list) with Individual objects that contains their respective genotype.
+        
+        It uses the genotype constructor defined in the configuration to build them.
         """
         for i in range(self.conf.population_size-len(recovered_individuals)):
             individual = self._new_individual(self.conf.genotype_constructor(self.conf.genotype_conf, self.next_robot_id))
@@ -108,7 +110,7 @@ class Population:
 
     def next_gen(self, gen_num, recovered_individuals=[]):
         """
-        Creates next generation of the population through selection, mutation, crossover
+        Creates next generation of the population through selection, mutation, crossover.
 
         :param gen_num: generation number
         :param individuals: recovered offspring
@@ -156,7 +158,7 @@ class Population:
 
     def evaluate(self, new_individuals, gen_num, type_simulation = 'evolve'):
         """
-        Evaluates each individual in the new gen population
+        Evaluates each individual in the new gen population.
 
         :param new_individuals: newly created population after an evolution iteration
         :param gen_num: generation number
@@ -184,7 +186,7 @@ class Population:
 
     def get_fittest_robot(self):
         """
-        Returns the fittest robot of the population
+        Returns the fittest robot of the population.
 
         :return: :class:`~pyrmevo.evolution.individual.Individual` with higher fitness
         """

@@ -7,7 +7,7 @@ import copy
 
 def generate_child_genotype(parent_genotypes, genotype_conf, crossover_conf):
     """
-    Generates a child (individual) by randomly swaping two branches of the parents
+    Generates a child (individual) by randomly swaping two branches of the parents.
 
     :param parents: parents to be used for crossover
 
@@ -38,7 +38,7 @@ def generate_child_genotype(parent_genotypes, genotype_conf, crossover_conf):
 
 def standard_crossover(parent_individuals, genotype_conf, crossover_conf):
     """
-    Creates an child (individual) through crossover with two parents
+    Creates an child (individual) through crossover with two parents.
 
     :param parent_genotypes: genotypes of the parents to be used for crossover
     :return: genotype result of the crossover

@@ -9,13 +9,3 @@ Subpackages
 
    pyrmevo.genotype.plasticoding
 
-Submodules
-**********
-
-pyrmevo.genotype.genotype module
---------------------------------
-
-.. automodule:: pyrmevo.genotype.genotype
-   :members:
-   :undoc-members:
-   :show-inheritance:

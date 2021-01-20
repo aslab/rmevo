@@ -1,6 +1,3 @@
-"""
-Robot body generator based on the revolve code
-"""
 import yaml
 import traceback
 from collections import OrderedDict
@@ -16,7 +13,7 @@ import os
 
 class RMEvoBot:
     """
-    Generalization from the revolve robot used in the RMEvo code
+    Robot body generator based on the revolve code.
     """
 
     def __init__(self, _id=None, self_collide=True, self_factory=None):
@@ -71,16 +68,14 @@ class RMEvoBot:
 
     def get_robot_module(self, selected):
         """
-        Masks the _get_module function
+        Returns the module with the number given in selected by a depth first count.
+
+        There is probably another method more efficient.
         """
         return self._get_module(self._body, selected)
 
 
     def measure_behaviour(self):
-        """
-
-        :return:
-        """
         pass
 
     def measure_phenotype(self):
@@ -112,9 +107,9 @@ class RMEvoBot:
     def load(self, text, conf_type):
         """
         Load robot's description from a string and parse it to Python structure
+
         :param text: Robot's description string
         :param conf_type: Type of a robot's description format
-        :return:
         """
         if 'yaml' == conf_type:
             self.load_yaml(text)
@@ -124,6 +119,7 @@ class RMEvoBot:
     def load_yaml(self, text):
         """
         Load robot's description from a yaml string
+
         :param text: Robot's yaml description
         """
 
@@ -134,10 +130,10 @@ class RMEvoBot:
 
     def load_file(self, path, conf_type='yaml'):
         """
-        Read robot's description from a file and parse it to Python structure
+        Read robot's description from a file and parse it to Python structure.
+
         :param path: Robot's description file path
         :param conf_type: Type of a robot's description format
-        :return:
         """
         with open(path, 'r') as robot_file:
             robot = robot_file.read()
@@ -146,9 +142,9 @@ class RMEvoBot:
 
     def to_yaml(self):
         """
-        Converts robot data structure to yaml
+        Converts robot data structure to yaml.
 
-        :return:
+        :return: yaml of the robot
         """
         yaml_dict = OrderedDict()
         yaml_dict['id'] = self._id
@@ -160,7 +156,8 @@ class RMEvoBot:
 
     def save_file(self, path, conf_type='yaml'):
         """
-        Save robot's description on a given file path in a specified format
+        Save robot's description on a given file path in a specified format.
+
         :param path:
         :param conf_type:
         :return:

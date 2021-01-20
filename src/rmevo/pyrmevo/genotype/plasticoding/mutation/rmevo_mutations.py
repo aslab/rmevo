@@ -128,4 +128,7 @@ def standard_mutation(genotype, mutation_conf):
 
 
 def null_mutation(genotype, mutation_conf):
+    """
+    No mutation operator.
+    """
     return genotype
