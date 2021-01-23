@@ -69,7 +69,7 @@ The node starts several services that can be call through ``rosservice``.
   Returns a string with the list of modules available. Some information of the modules is also given.
   The modules are concatenated using a */n*.
 
-  This service provides the basic information of the modules to the :ros:node:`RMEvo_Core`.
+  This service provides the basic information of the modules to the :ros:pkg:`rmevo` Node.
   This information is used to generate the genotype of the population.
  
 

@@ -15,12 +15,11 @@ import os
 import sys
 # sys.path.insert(0, os.path.abspath('.'))
 sys.path.append(os.path.abspath('../../../src/factory_ros'))
-sys.path.append(os.path.abspath('../../../src/rmevo/pyrmevo'))
+sys.path.append(os.path.abspath('../../../src/rmevo'))
 sys.path.append(os.path.abspath('../../../src/rmevo_gazebo'))
 
 import recommonmark
 from recommonmark.transform import AutoStructify
-
 
 # -- Project information -----------------------------------------------------
 
@@ -68,6 +67,12 @@ exclude_patterns = []
 pygments_style = 'sphinx'
 
 todo_include_todos = True
+
+autodoc_mock_imports = ["rospy",
+                        "std_srvs",
+                        "gazebo_msgs",
+                        "rmevo",
+                        "factory_ros"]
 
 # -- Options for HTML output -------------------------------------------------
 
