@@ -17,6 +17,7 @@ import sys
 sys.path.append(os.path.abspath('../../../src/factory_ros'))
 sys.path.append(os.path.abspath('../../../src/rmevo'))
 sys.path.append(os.path.abspath('../../../src/rmevo_gazebo'))
+sys.path.append(os.path.abspath('../../sphinx_ros'))
 
 import recommonmark
 from recommonmark.transform import AutoStructify
@@ -39,6 +40,9 @@ extensions = ['sphinx.ext.autodoc',
             'sphinx_ros',
             'm2r2',
             'breathe']
+
+import subprocess
+subprocess.call('cd ../../doxygen ; doxygen', shell=True)
 
 breathe_projects = { "RMEvoFramework": "../../doxygen/build/xml" }
 breathe_default_project = "RMEvoFramework"
