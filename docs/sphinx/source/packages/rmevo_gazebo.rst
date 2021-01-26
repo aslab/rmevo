@@ -24,6 +24,7 @@ Dependencies
 ************
 
 :Depend: :ros:pkg:`rospy`
+          :ros:pkg:`roscpp`
           :ros:pkg:`gazebo`
 
 :Build: :ros:pkg:`message_generation`
