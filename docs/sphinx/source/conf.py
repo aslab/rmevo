@@ -43,7 +43,6 @@ extensions = ['sphinx.ext.autodoc',
 
 import subprocess
 subprocess.call('cd ../../doxygen ; doxygen', shell=True)
-html_extra_path = ['../../doxygen/build/html']
 
 breathe_projects = { "RMEvoFramework": "../../doxygen/build/xml" }
 breathe_default_project = "RMEvoFramework"
