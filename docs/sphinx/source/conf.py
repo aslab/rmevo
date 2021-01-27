@@ -116,4 +116,10 @@ def recursive_copy(src, dst, symlinks=False, ignore=None):
                 os.makedirs(os.path.dirname(d))
                 copy2(s, d)
 
-recursive_copy(os.path.abspath('../../../images'), os.path.abspath('../build/images/'))
+read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
+
+if read_the_docs_build:
+    print("Copying images")
+    recursive_copy(os.path.abspath('../../../images'), os.path.abspath('../_build/images/'))
+else:
+    recursive_copy(os.path.abspath('../../../images'), os.path.abspath('../build/images/'))
