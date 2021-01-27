@@ -1,0 +1,8 @@
+m2r2
+breathe
+rospkg
+roslibpy
+numpy
+pycairo
+recommonmark
+sphinx_rtd_theme

@@ -674,6 +674,17 @@ from pyrmevo.genotype.plasticoding import initialization
 
 
 class PlasticodingConfig:
+    """
+    Stores the configuration of the Plasticoding module, that manages the rules used to generate new
+    genotypes.
+
+    :param initialization_genome: method for the genome initialization
+    :param axiom_w: module used as main parent of the genotype tree
+    :param max_depth: maximum depth that the robot tree can reach
+    :param robot_id: ID of the robot
+    :param factory: factory manager that the robot can use to generate its configuration
+    :param empty_child_prob: probability that a certain node is leaved empty
+    """
     def __init__(self,
                  initialization_genome=initialization.rmevo_random_initialization,
                  e_max_groups=3,

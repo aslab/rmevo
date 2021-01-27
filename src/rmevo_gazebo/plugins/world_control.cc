@@ -17,6 +17,11 @@
 
 namespace gazebo
 {
+  /**
+     * \brief Class that controls the Gazebo World.
+     * 
+     * Child class of gazebo::WorldPlugin. Implements FitnessEvaluation method.
+     * */
   class WorldControl : public WorldPlugin
   {
     private:
@@ -26,9 +31,19 @@ namespace gazebo
 		ros::ServiceServer evaluate_fitness_service;
 
     public:
+    /**
+     * \brief Constructor.
+     * */
     WorldControl() : nh_("worldcontrol") {
     }
 
+    /**
+     * \brief Starts the node and all its services,
+     * 
+     * Called at startup.
+     * @param[in] world World element.
+     * @param[in] sdf SDF of the World.
+     * */
     void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf)
     {
         // Make sure the ROS node for Gazebo has already been initialized
@@ -47,11 +62,27 @@ namespace gazebo
         advertiseServices();
     }
 
+    /**
+     * \brief Advertise all the service of the node
+     * 
+     * Called at start up.
+     * 
+     * */
     void advertiseServices(){
         this->pause_simulation_service = this-> nh_.advertiseService("pause_simulation", &WorldControl::pauseSimulation, this);
         this->evaluate_fitness_service = this-> nh_.advertiseService("evaluate_fitness", &WorldControl::evaluateFitness, this);
     }
 
+    /**
+     * \brief Pauses the simulation.
+     * 
+     * This method is inherited from the Gazebo node parent, and is already available 
+     * throught the proper service. 
+     * 
+     * This implementations serves as a test.
+     * @param[in] req Service request (empty).
+     * @param[out] res Service response (empty).
+     * */
     bool pauseSimulation(std_srvs::Empty::Request &req,std_srvs::Empty::Response &res){
         (void)req;
         (void)res;
@@ -60,6 +91,18 @@ namespace gazebo
         return true;
     }
 
+    /**
+     * \brief Evaluates the fitness of the given robot
+     * 
+     * Callback function of the service `/world_control/evaluate_fitness`.
+     * 
+     * This function should be changed by the user to fit his needs. By default, it calls the function
+     * \ref `count_entity_children(gazebo::physics::BasePtr)`.
+     * 
+     * This implementations serves as a test.
+     * @param[in] req Service request (empty).
+     * @param[out] res Service response (empty).
+     * */
     bool evaluateFitness(rmevo_gazebo::FitnessEvaluation::Request &req, rmevo_gazebo::FitnessEvaluation::Response &res){
         ROS_INFO_NAMED("WorldControl", "Evaluating fitness of robot: %s", req.robot_id.c_str());
         // Currently a simple evaluation
@@ -79,6 +122,17 @@ namespace gazebo
         return true;
     }
 
+    /**
+     * \brief Example method of fitness function
+     * 
+     * Computes the number of children of the current link recursively.
+     * 
+     * This function serves as an example of fitness function. The user should write
+     * a function that given an entity computes certain value related to some of its properties.
+     *
+     * @param[in] entity Parent entity whose children are counted.
+     * \return Number of children of the entity.
+     * */
     int count_entity_children(gazebo::physics::BasePtr entity){
         int all_children = 0;
         for (unsigned i = 0; i < entity->GetChildCount(); i++){

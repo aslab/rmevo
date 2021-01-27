@@ -2,13 +2,15 @@
 
 
 class Individual:
-    def __init__(self, genotype, phenotype=None):
-        """
-        Creates an Individual object with the given genotype and optionally the phenotype.
+    """
+    Object that represent each single individual.
+    Stores his genotype and fitness.
 
-        :param genotype: genotype of the individual
-        :param phenotype (optional): phenotype of the individual
-        """
+    :param genotype: genotype of the individual.
+    :type genotype: :class:`~pyrmevo.genotype.genotype.Genotype`
+    :param phenotype (optional): not in use.
+    """
+    def __init__(self, genotype, phenotype=None):
         self.genotype = genotype
         self.fitness = None
         self.parents = None
