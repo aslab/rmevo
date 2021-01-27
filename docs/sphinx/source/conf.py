@@ -28,7 +28,6 @@ project = 'RMEvo Framework'
 copyright = '2020, J. Poveda'
 author = 'J. Poveda'
 
-
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -46,7 +45,6 @@ subprocess.call('cd ../../doxygen ; doxygen', shell=True)
 
 breathe_projects = { "RMEvoFramework": "../../doxygen/build/xml" }
 breathe_default_project = "RMEvoFramework"
-
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -101,3 +99,21 @@ html_static_path = ['static']
 #     app.add_transform(AutoStructify)
 
 # -- Options for Latex output -------------------------------------------------
+
+# Copy images
+from shutil import copytree, copy2
+
+def recursive_copy(src, dst, symlinks=False, ignore=None):
+    for item in os.listdir(src):
+        s = os.path.join(src, item)
+        d = os.path.join(dst, item)
+        if os.path.isdir(s):
+            copytree(s, d, symlinks, ignore)
+        else:
+            try:
+                copy2(s, d)
+            except IOError as io_err:
+                os.makedirs(os.path.dirname(d))
+                copy2(s, d)
+
+recursive_copy(os.path.abspath('../../../images'), os.path.abspath('../build/images/'))
