@@ -1,57 +1,39 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<sdf version="1.6">
-  <model name="Core">
-    <link name="base_link">
-      <pose frame="">0 0 0 0 -0 0</pose>
+﻿<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='tool'>
+    <link name='base_link'>
+      <pose frame=''>0 0 0 0 -0 0</pose>
       <inertial>
-        <pose frame="">0 0 0.4 0 -0 0</pose>
+        <pose frame=''>0 0 -5 0 -0 0</pose>
         <mass>1</mass>
-        <inertia>
-          <ixx>0.004</ixx>
-          <ixy>0</ixy>
-          <ixz>0</ixz>
-          <iyy>0.004</iyy>
-          <iyz>0</iyz>
-          <izz>0.004</izz>
-        </inertia>
       </inertial>
-      <collision name="body_link_collision">
-        <pose frame="">0 0 0 0 -0 0</pose>
+      <visual name='visual'>
+        <pose frame=''>0 0 -5 0 -0 0</pose>
         <geometry>
-          <box>
-            <size>0.1 0.1 0.1</size>
-          </box>
+          <mesh>
+            <uri>model://tool/meshes/drill.dae</uri>
+            <scale>0.05 0.05 0.05</scale>
+          </mesh>
         </geometry>
-        <surface>
-          <contact>
-            <ode/>
-          </contact>
-          <friction>
-            <ode/>
-          </friction>
-        </surface>
-      </collision>
-      <visual name="body_link_1_visual">
-        <pose frame="">0 0 0 0 -0 0</pose>
-         <geometry>
-          <box>
-            <size>0.1 0.1 0.1</size>
-          </box>
-        </geometry>
+        <pose frame=''>0 0 0 0 -0 0</pose>
       </visual>
-      <gravity>1</gravity>
+      <collision name='collision'>
+        <pose frame=''>0 0 -5 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://tool/meshes/drill.dae</uri>
+            <scale>0.05 0.05 0.05</scale>
+          </mesh>
+        </geometry>
+      </collision>
     </link>
+
     <rmevo>
       <slots>
         <slot name="0">
-          <pos>0.05 0 0</pos>
-          <norm>1 0 0 </norm>
-          <tan>0 1 0</tan>
-        </slot>
-        <slot name="1">
-          <pos>-0.05 0 0</pos>
-          <norm>-1 0 0</norm>
-          <tan>0 1 0</tan>
+          <pos>0 0.2 0</pos>
+          <norm>0 1 0 </norm>
+          <tan>1 0 0</tan>
         </slot>
       </slots>
     </rmevo>
