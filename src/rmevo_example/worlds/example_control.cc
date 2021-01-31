@@ -97,15 +97,33 @@ namespace gazebo
     gazebo::physics::LinkPtr get_target_pointer(physics::WorldPtr world){
         physics::ModelPtr rock = world->ModelByName("rock");
         physics::LinkPtr mineral = rock->GetChildLink("mineral");
+        if (mineral != NULL)
+          ROS_INFO_NAMED("WorldControl", "Obtained target pointer.");
+        else
+          ROS_ERROR_NAMED("WorldControl", "Didn't find target");
         return mineral;
     }
 
-    int distance_to_target(gazebo::physics::ModelPtr entity){
-        ignition::math::Vector3d target_position = this->target->RelativePose().Pos();
-        physics::LinkPtr tool = entity->GetChildLink("tool");
-        ignition::math::Vector3d tool_position = tool->RelativePose().Pos();
+    float distance_to_target(gazebo::physics::ModelPtr entity){
+        ignition::math::Vector3d target_position = this->target->WorldPose().Pos();
+        ROS_INFO_NAMED("WorldControl", "Obtained target position.");
+        for (unsigned int i = 0; i < entity->GetChildCount(); i++){
+          char child_name = entity->GetChild(i)->GetName();
+          int len = strlen(child_name);
+          if ( strcmp(child_name[len-4], "tool"){
+            physics::LinkPtr tool = entity->GetChild(i);
+            break;
+          }
+        }
+        if (tool == NULL){
+          ROS_INFO_NAMED("WorldControl", "Tool not found");
+          return 0;
+        }
+        ROS_INFO_NAMED("WorldControl", "Tool found.");
+        ignition::math::Vector3d tool_position = tool->WorldPose().Pos();
+        ROS_INFO_NAMED("WorldControl", "Tool position: %f", tool_position[1]);
         float distance = pow((target_position[0] - tool_position[0]), 2) + pow((target_position[1] - tool_position[1]), 2) + pow((target_position[2] - tool_position[2]), 2);
-
+        return distance;
     }
   };
 
