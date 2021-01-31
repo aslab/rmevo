@@ -9,6 +9,7 @@
     </include>
     <include>
       <uri>model://rock</uri>
+      <pose frame=''>-2 0 0 0 -0 0</pose>
     </include>
     <plugin filename="libexample_control.so" name="example_control"/>
   </world>
